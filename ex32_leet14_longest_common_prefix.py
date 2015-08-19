@@ -1,5 +1,7 @@
 # Write a function to find the longest common prefix string amongst an array of strings.
 
+#tags: String
+
 class Solution:
     # @param {string[]} strs
     # @return {string}
