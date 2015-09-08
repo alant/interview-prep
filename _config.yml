@@ -1,0 +1,12 @@
+# Site settings
+title: 汤包的 Leetcode 笔记
+email: 
+description: > # this means to ignore newlines until "baseurl:"
+  用 python 刷 Leetcode 的题。 
+baseurl: "/leetcode" # the subpath of your site, e.g. /blog/
+url: "http://ahtang.com" # the base hostname & protocol for your site
+twitter_username: 
+github_username:  
+
+# Build settings
+markdown: kramdown
