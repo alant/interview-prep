@@ -3,6 +3,8 @@ layout: post
 title:  "Leetcode14 Longest Common Prefix"
 date:   2015-09-08 00:00:00
 categories: string
+tags:
+- String
 ---
 原本发表在新浪微博上面：http://blog.sina.com.cn/s/blog_6f2e841a0102vvdy.html 既然刚弄了 jekyll， 就拷过来充个数。
 
@@ -20,7 +22,6 @@ Write a function to find the longest common prefix string amongst an array of st
 
 不然的话代码如下：
 
-测试一下 python 语法高亮
 {% highlight python linenos %}
 # Write a function to find the longest common prefix string amongst an array of strings.
 
