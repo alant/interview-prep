@@ -1,9 +1,9 @@
 # todo
-## [409. Longest Palindrome (Easy)](https://leetcode.com/problems/longest-palindrome/description/)
+[658. Find K Closest Elements (Medium)](https://leetcode.com/problems/find-k-closest-elements/description/)
+[409. Longest Palindrome (Easy)](https://leetcode.com/problems/longest-palindrome/description/)
 基于中心点枚举法 Enumeration
 基于动态规划 Dynamic Programming
-
-## [Implement strStr](http://www.lintcode.com/problem/strstr/)
+[Implement strStr](http://www.lintcode.com/problem/strstr/)
 
 # Binary Search & LogN Algorithm
 比O(n)更优的时间复杂度几乎只能是O(logn)的二分法
@@ -55,7 +55,7 @@ class Solution:
 ```
 总结：背好模板，lintcode 的 test case 包含空输入数组，需要 python3 的 // 整除运算符才能过
 
-## [lintcode 14. First Position of Target (Easy)](https://www.lintcode.com/problem/first-position-of-target/description)
+## [Lintcode 14. First Position of Target (Easy)](https://www.lintcode.com/problem/first-position-of-target/description)
 ```html
 Description
 For a given sorted array (ascending order) and a target number, find the first index of this number in O(log n) time complexity.
@@ -86,7 +86,7 @@ class Solution:
             mid = start + (end - start) // 2
             if (nums[mid] >= target):
                 end = mid
-            elif (nums[mid] < target):
+            else:
                 start = mid
         if (nums[start] == target):
             return start
@@ -142,3 +142,64 @@ class Solution(object):
         return -1
 ```
 总结：可不做
+
+## [Lintcode 460. Find K Closest Elements (Medium)](https://www.lintcode.com/problem/find-k-closest-elements/description)
+```html
+Given a target number, a non-negative integer k and an integer array A sorted in ascending order, find the k closest numbers to target in A, sorted in ascending order by the difference between the number and target. Otherwise, sorted in ascending order by number if the difference is same.
+
+Example
+Given A = [1, 2, 3], target = 2 and k = 3, return [2, 1, 3].
+
+Given A = [1, 4, 6, 8], target = 3 and k = 3, return [4, 1, 6].
+
+Challenge
+O(logn + k) time complexity.
+
+Notice
+The value k is a non-negative integer and will always be smaller than the length of the sorted array.
+Length of the given array is positive and will not exceed 10^4
+Absolute value of elements in the array and x will not exceed 10^4
+```
+思路：二分查找找到 start end 以后，用两个判断条件来限制取值范围。当 left 超过取值范围之后，只取 right 以后的数。
+当 right 超过取值范围之后，只取 left 之前的数
+
+```python
+class Solution:
+    """
+    @param A: an integer array
+    @param target: An integer
+    @param k: An integer
+    @return: an integer array
+    """
+    def kClosestNumbers(self, A, target, k):
+        # write your code here
+        start, end = 0, len(A) - 1
+        while (start + 1 < end):
+            mid = start + (end - start) // 2
+            if (A[mid] < target):
+                start = mid
+            else:
+                end = mid
+        left, right = start, end
+        result = []
+        while (k > 0):
+            if (left >= 0 and right <= len(A) - 1):
+                if (target - A[left] <= A[right] - target):
+                    result.append(A[left])
+                    left -= 1
+                else:
+                    result.append(A[right])
+                    right += 1
+            elif (left < 0):
+                result.append(A[right])
+                right += 1
+            else:
+                result.append(A[left])
+                left -= 1
+            k -=  1
+        return result
+            
+```
+总结，一开始没有充分理解题目，题目说的是 k closest elements to x in the array， 找到离 x 最近的点以后要往两边看 k 次。解题方法多少有点需要背的因素。
+
+
