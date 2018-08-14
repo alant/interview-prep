@@ -10,3 +10,29 @@
 二分法模板: start + 1 < end; start + (end - start) / 2; A[mid] ==, <, >; A[start] A[end] ? target
 
 ## [704. Binary Search (Easy)](https://leetcode.com/problems/binary-search/description/)
+```html
+Find any position of a target number in a sorted array. Return -1 if target does not exist.
+
+Example
+Given [1, 2, 2, 4, 5, 5].
+
+For target = 2, return 1 or 2.
+
+For target = 5, return 4 or 5.
+
+For target = 6, return -1.
+
+Challenge
+O(logn) time
+```
+```python
+class Solution:
+    """
+    @param: nums: An integer array sorted in ascending order
+    @param: target: An integer
+    @return: An integer
+    """
+    def findPosition(self, nums, target):
+        # write your code here
+        
+```
