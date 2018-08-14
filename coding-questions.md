@@ -7,9 +7,10 @@
 
 # Binary Search & LogN Algorithm
 比O(n)更优的时间复杂度几乎只能是O(logn)的二分法
-二分法模板: start + 1 < end; start + (end - start) / 2; A[mid] ==, <, >; A[start] A[end] ? target
+二分法模板: start + 1 < end; start + (end - start) / 2; A[mid] ==, >, <; A[start] A[end] ? target
 
 ## [704. Binary Search (Easy)](https://leetcode.com/problems/binary-search/description/)
+[lintcode's version](https://www.lintcode.com/problem/classical-binary-search/description)
 ```html
 Find any position of a target number in a sorted array. Return -1 if target does not exist.
 
@@ -25,6 +26,7 @@ For target = 6, return -1.
 Challenge
 O(logn) time
 ```
+总结：背好模板，lintcode 的 test case 包含空输入数组，需要 python3 的 // 整除运算符才能过
 ```python
 class Solution:
     """
@@ -34,5 +36,21 @@ class Solution:
     """
     def findPosition(self, nums, target):
         # write your code here
-        
+        if (len(nums) == 0):
+          return -1
+        start, end = 0, len(nums) - 1
+        while (start + 1 < end):
+            mid = start + (end - start) // 2     
+            if (nums[mid] == target):
+                return mid
+            elif (target > nums[mid]):
+                start = mid
+            else:
+                end = mid    
+        if (nums[start] == target):
+            return start
+        if (nums[end] == target):
+            return end
+        return -1
+
 ```
