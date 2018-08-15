@@ -297,3 +297,32 @@ class Solution:
         return nums[end]
 ```
 总结：应改为 Easy 难度的题。
+Follow up: 如果有重复的数? 无法保证在 Log(N) 的时间复杂度内解决 例子:[1,1,1,1,1....,1] 里藏着一个 0.最坏情况下需要把每个位置上的1都看一遍，才能找到最后一个有0 的位置. 考点:能想到这个最坏情况的例子
+
+## [Lintcode 585. Maximum Number in Mountain Sequence (Medium)](https://www.lintcode.com/problem/maximum-number-in-mountain-sequence/description)
+[852. Peak Index in a Mountain Array](https://leetcode.com/problems/peak-index-in-a-mountain-array/description/)
+```html
+Given a mountain sequence of n integers which increase firstly and then decrease, find the mountain top.
+Example
+Given nums = [1, 2, 4, 8, 6, 3] return 8
+Given nums = [10, 9, 8, 7], return 10
+```
+思路：一开始以为跟上题一样，返回 start 就行了，也许是不值得做的题，可是没有考虑到后面不是递增而是递减。所以，需要改算法为切一刀，判断递增就扔左边，递减就扔右边， 不然就找到了中点
+```python
+class Solution:
+    """
+    @param nums: a mountain sequence which increase firstly and then decrease
+    @return: then mountain top
+    """
+    def mountainSequence(self, nums):
+        # write your code here
+        start, end = 0, len(nums) - 1
+        while (start + 1 < end):
+            mid = start + (end - start) // 2
+            if (nums[mid - 1] < nums[mid] < nums[mid + 1]):
+                start = mid
+            elif (nums[mid - 1] > nums[mid] > nums[mid + 1]):
+                end = mid
+            else:
+                return nums[mid]
+        return nums[end] if nums[start] < nums[end] else nums[start]
