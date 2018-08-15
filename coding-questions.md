@@ -64,6 +64,23 @@ O(n2) is acceptable. Can you implement an O(n) algorithm? (hint: KMP)
 [240. Search a 2D Matrix II (Medium)](https://leetcode.com/problems/search-a-2d-matrix-ii/description/)
 [Lintcode Search a 2D Matrix II](http://www.lintcode.com/en/problem/search-a-2d-matrix-ii/)
 
+## [600. Smallest Rectangle Enclosing Black Pixels (Hard)](https://www.lintcode.com/problem/smallest-rectangle-enclosing-black-pixels/description)
+```html
+An image is represented by a binary matrix with 0 as a white pixel and 1 as a black pixel. The black pixels are connected, i.e., there is only one black region. Pixels are connected horizontally and vertically. Given the location (x, y) of one of the black pixels, return the area of the smallest (axis-aligned) rectangle that encloses all black pixels.
+
+Example
+For example, given the following image:
+
+[
+  "0010",
+  "0110",
+  "0100"
+]
+and x = 0, y = 2,
+Return 6.
+```
+思路：            
+
 # Binary Search & LogN Algorithm
 比O(n)更优的时间复杂度几乎只能是O(logn)的二分法
 二分法模板: start + 1 < end; start + (end - start) / 2; A[mid] ==, <, >; A[start] A[end] ? target
@@ -451,3 +468,54 @@ class Solution:
         return [firstO, lastO]
 ```
 总结：注意检查空输入！
+
+## [162. Find Peak Element (Medium)](https://leetcode.com/problems/find-peak-element/description/)
+```html
+A peak element is an element that is greater than its neighbors.
+
+Given an input array nums, where nums[i] ≠ nums[i+1], find a peak element and return its index.
+
+The array may contain multiple peaks, in that case return the index to any one of the peaks is fine.
+
+You may imagine that nums[-1] = nums[n] = -∞.
+
+Example 1:
+
+Input: nums = [1,2,3,1]
+Output: 2
+Explanation: 3 is a peak element and your function should return the index number 2.
+Example 2:
+
+Input: nums = [1,2,1,3,5,6,4]
+Output: 1 or 5
+Explanation: Your function can return either index number 1 where the peak element is 2,
+             or index number 5 where the peak element is 6.
+Note:
+
+Your solution should be in logarithmic complexity.
+```
+思路：和前面 Lintcode 585. Maximum Number in Mountain Sequence 应该是一个路子
+```python
+class Solution:
+    def findPeakElement(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if (len(nums) == 0):
+            return -1
+        start, end = 0, len(nums) - 1
+        while (start + 1 < end):
+            mid = start + (end - start) // 2
+            if (nums[mid - 1] < nums[mid] < nums[mid + 1]):
+                start = mid
+            elif (nums[mid - 1] < nums[mid] > nums[mid + 1]):
+                return mid
+            else:
+                end = mid
+        if nums[start] > nums[end]:
+            return start
+        else:
+            return end
+```
+总结：确实和前面一样， 不用做
