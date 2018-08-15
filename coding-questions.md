@@ -61,6 +61,8 @@ If source = "abcdabcdefg" and target = "bcd", return 1.
 Challenge
 O(n2) is acceptable. Can you implement an O(n) algorithm? (hint: KMP)
 ```
+[240. Search a 2D Matrix II (Medium)](https://leetcode.com/problems/search-a-2d-matrix-ii/description/)
+[Lintcode Search a 2D Matrix II](http://www.lintcode.com/en/problem/search-a-2d-matrix-ii/)
 
 # Binary Search & LogN Algorithm
 比O(n)更优的时间复杂度几乎只能是O(logn)的二分法
@@ -397,3 +399,55 @@ class Solution:
         return False
 ```
 总结：注意检查空输入
+
+## [Lintcode 61. Search for a Range (Medium)](https://www.lintcode.com/problem/search-for-a-range/description)
+```html
+Given a sorted array of n integers, find the starting and ending position of a given target value.
+
+If the target is not found in the array, return [-1, -1].
+
+Example
+Given [5, 7, 7, 8, 8, 10] and target value 8,
+return [3, 4].
+
+Challenge
+O(log n) time.
+```
+思路：找一个数的第一次和最后一次出现的 index
+```python
+class Solution:
+    """
+    @param A: an integer sorted array
+    @param target: an integer to be inserted
+    @return: a list of length 2, [index1, index2]
+    """
+    def searchRange(self, A, target):
+        # write your code here
+        firstO, lastO = -1, -1
+        if len(A) == 0:
+            return [firstO, lastO]
+        start, end = 0, len(A) - 1
+        while (start + 1 < end):
+            mid = start + (end - start) // 2
+            if (A[mid] < target):
+                start = mid
+            else:
+                end = mid
+        if (A[end] == target):
+            firstO = end        
+        if (A[start] == target):
+            firstO = start
+        start, end = 0, len(A) - 1
+        while (start + 1 < end):
+            mid = start + (end - start) // 2
+            if (A[mid] <= target):
+                start = mid
+            else:
+                end = mid
+        if (A[start] == target):
+            lastO = start
+        if (A[end] == target):
+            lastO = end
+        return [firstO, lastO]
+```
+总结：注意检查空输入！
