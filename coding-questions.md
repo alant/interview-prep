@@ -326,3 +326,74 @@ class Solution:
             else:
                 return nums[mid]
         return nums[end] if nums[start] < nums[end] else nums[start]
+```
+
+## [74. Search a 2D Matrix (Medium)](https://leetcode.com/problems/search-a-2d-matrix/description/)
+```html
+Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+
+Integers in each row are sorted from left to right.
+The first integer of each row is greater than the last integer of the previous row.
+Example 1:
+
+Input:
+matrix = [
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+target = 3
+Output: true
+Example 2:
+
+Input:
+matrix = [
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+target = 13
+Output: false
+```
+思路：二分查找，不过是放到二维数组里了
+```python
+class Solution:
+    def searchMatrix(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        if len(matrix) == 0:
+            return False
+        if len(matrix[0]) == 0:
+            return False
+        startR, endR = 0, len(matrix) - 1
+        startC, endC = 0, len(matrix[0]) - 1
+        while(startR + 1 < endR):
+            midR = startR + (endR - startR) // 2
+            if (matrix[midR][0] == target):
+                return True
+            elif (matrix[midR][0] < target):
+                startR = midR
+            else:
+                endR = midR
+        if (matrix[startR][0] == target or matrix[endR][0] == target):
+            return True
+        elif (matrix[endR][0] < target):
+            targetR = endR
+        else:
+            targetR = startR
+        while(startC + 1 < endC):
+            midC = startC + (endC - startC) // 2
+            if (matrix[targetR][midC] == target):
+                return True
+            elif (matrix[targetR][midC] < target):
+                startC = midC
+            else:
+                endC = midC
+        if (matrix[targetR][startC] == target or matrix[targetR][endC] == target):
+            return True
+        return False
+```
+总结：注意检查空输入
