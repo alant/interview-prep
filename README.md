@@ -1,1 +1,1 @@
-Store some coding exercises here
+Some interview prep notes.

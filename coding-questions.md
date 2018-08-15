@@ -1,9 +1,66 @@
 # todo
-[658. Find K Closest Elements (Medium)](https://leetcode.com/problems/find-k-closest-elements/description/)
-[409. Longest Palindrome (Easy)](https://leetcode.com/problems/longest-palindrome/description/)
+## [658. Find K Closest Elements (Medium)](https://leetcode.com/problems/find-k-closest-elements/description/)
+```html
+Given a sorted array, two integers k and x, find the k closest elements to x in the array. The result should also be sorted in ascending order. If there is a tie, the smaller elements are always preferred.
+
+Example 1:
+Input: [1,2,3,4,5], k=4, x=3
+Output: [1,2,3,4]
+Example 2:
+Input: [1,2,3,4,5], k=4, x=-1
+Output: [1,2,3,4]
+Note:
+The value k is positive and will always be smaller than the length of the sorted array.
+Length of the given array is positive and will not exceed 104
+Absolute value of elements in the array and x will not exceed 104
+UPDATE (2017/9/19):
+The arr parameter had been changed to an array of integers (instead of a list of integers). Please reload the code definition to get the latest changes.
+```
+
+## [409. Longest Palindrome (Easy)](https://leetcode.com/problems/longest-palindrome/description/)
+```html
+Given a string which consists of lowercase or uppercase letters, find the length of the longest palindromes that can be built with those letters.
+
+This is case sensitive, for example "Aa" is not considered a palindrome here.
+
+Note:
+Assume the length of given string will not exceed 1,010.
+
+Example:
+
+Input:
+"abccccdd"
+
+Output:
+7
+
+Explanation:
+One longest palindrome that can be built is "dccaccd", whose length is 7.
+```
+
 基于中心点枚举法 Enumeration
 基于动态规划 Dynamic Programming
-[Implement strStr](http://www.lintcode.com/problem/strstr/)
+
+## [Implement strStr](http://www.lintcode.com/problem/strstr/)
+```html
+Description
+For a given source string and a target string, you should output the first index(from 0) of target string in source string.
+
+If target does not exist in source, just return -1.
+
+Have you met this question in a real interview?  
+Clarification
+Do I need to implement KMP Algorithm in a real interview?
+
+Not necessary. When you meet this problem in a real interview, the interviewer may just want to test your basic implementation ability. But make sure you confirm with the interviewer first.
+Example
+If source = "source" and target = "target", return -1.
+
+If source = "abcdabcdefg" and target = "bcd", return 1.
+
+Challenge
+O(n2) is acceptable. Can you implement an O(n) algorithm? (hint: KMP)
+```
 
 # Binary Search & LogN Algorithm
 比O(n)更优的时间复杂度几乎只能是O(logn)的二分法
@@ -198,8 +255,45 @@ class Solution:
                 left -= 1
             k -=  1
         return result
-            
+
 ```
 总结，一开始没有充分理解题目，题目说的是 k closest elements to x in the array， 找到离 x 最近的点以后要往两边看 k 次。解题方法多少有点需要背的因素。
 
+## [153. Find Minimum in Rotated Sorted Array (Medium)](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/)
+```html
+Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
 
+(i.e.,  [0,1,2,4,5,6,7] might become  [4,5,6,7,0,1,2]).
+
+Find the minimum element.
+
+You may assume no duplicate exists in the array.
+
+Example 1:
+Input: [3,4,5,1,2]
+Output: 1
+
+Example 2:
+Input: [4,5,6,7,0,1,2]
+Output: 0
+```
+思路：找 pivot，pivot > 0 时返回 nums[pivot + 1]。找 pivot 时,如果 mid < start, 扔 end， 如果 mid > start 扔 start
+```python
+class Solution:
+    def findMin(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if (nums[0] < nums[len(nums) - 1]):
+            return nums[0]
+        start, end = 0, len(nums) - 1
+        while (start + 1 < end):
+            mid = start + (end - start) // 2
+            if (nums[mid] < nums[start]):
+                end = mid
+            else:
+                start = mid
+        return nums[end]
+```
+总结：应改为 Easy 难度的题。
