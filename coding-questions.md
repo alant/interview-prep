@@ -572,3 +572,18 @@ class Solution:
         return -1    
 ```
 总结： 注意 [1, 3, 5] target 为 1 这种边界条件， 判断 target 在单调这边需要加等号
+
+## [Lintcode 140. Fast Power (Medium)](https://www.lintcode.com/problem/fast-power/description)
+```html
+Calculate the a**n % b where a, b and n are all 32bit integers.
+
+Example
+For 2**31 % 3 = 2
+
+For 100**1000 % 1000 = 0
+
+Challenge
+O(logn)
+```
+思路：第一感觉是：需要用某种数学方法，取模只取决于这个数取模后剩下的数加多少次，可以将次方换成乘法，再取模，乘法可以换算成 n 次幂取模 b 再乘 a。
+总结：递归版本： (a * b) % p = (a % p * b % p) % p 将 a^n % b 分解为 (a^(n/2) * a^(n/2) * (a)) %b = ((a^(n/2) * a^(n/2))%b * (a)%b) %b = ((a^(n/2)%b * a^(n/2)%b)%b * (a)%b) %b； 非递归版本，思路是转换为二进制
