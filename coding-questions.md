@@ -984,7 +984,31 @@ Input: numbers = [2,7,11,15], target = 9
 Output: [1,2]
 Explanation: The sum of 2 and 7 is 9. Therefore index1 = 1, index2 = 2.
 ```
-思路：
+思路：增加了 sorted 这个条件， 第一感觉是可以折半查找了。固定 index1，index2 用折半查找获得
+```python
+class Solution:
+    def twoSum(self, numbers, target):
+        """
+        :type numbers: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        for index1 in range(len(numbers)):
+            start, end = index1 + 1, len(numbers) - 1
+            while start + 1 < end:
+                mid = start + (end - start) // 2
+                if numbers[index1] + numbers[mid] == target:
+                    return [index1 + 1, mid + 1]
+                elif numbers[index1] + numbers[mid] < target:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+            if numbers[index1] + numbers[start] == target:
+                return [index1 + 1, start + 1]
+            elif numbers[index1] + numbers[end] == target:
+                return [index1 + 1, end + 1]
+```
+总结：要细心。1.题中 answers are not zero-based 2.要测两个情况 [2, 7, 19], 9 和 [5, 25, 75] 可以测出代码的问题
 
 ### [Lintcode 607. Two Sum III - Data structure design (Easy)](https://www.lintcode.com/problem/two-sum-iii-data-structure-design/description)
 ```html
