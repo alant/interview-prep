@@ -79,7 +79,23 @@ For example, given the following image:
 and x = 0, y = 2,
 Return 6.
 ```
-思路：            
+思路：   
+
+### [680. Valid Palindrome II (Easy)](https://leetcode.com/problems/valid-palindrome-ii/description/)
+```html
+Given a non-empty string s, you may delete at most one character. Judge whether you can make it a palindrome.
+
+Example 1:
+Input: "aba"
+Output: True
+Example 2:
+Input: "abca"
+Output: True
+Explanation: You could delete the character 'c'.
+Note:
+The string will only contain lowercase characters a-z. The maximum length of the string is 50000.
+```
+思路：目前网上看到大部分答案都以贪心算法为主， 等看贪心了再刷这题
 
 # Binary Search & LogN Algorithm
 比O(n)更优的时间复杂度几乎只能是O(logn)的二分法
@@ -921,3 +937,63 @@ class Solution(object):
         return True
 ```
 总结：思路简单， 但是要想到的 case 很多。考虑带标点符号，连续两个位置都是标点符号，整个字符串都是标点符合这三个情况才能写对
+
+### [1. Two Sum (Easy)](https://leetcode.com/problems/two-sum/description/)
+```html
+
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Example:
+
+Given nums = [2, 7, 11, 15], target = 9,
+
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+```
+思路：固定一个找另一个
+```python
+class Solution:
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        for index1 in xrange(len(nums)):
+            for index2 in xrange(index1 + 1, len(nums)):
+                if nums[index1] + nums[index2] == target:
+                    return [index1, index2]
+```
+总结： 第二层循环的起始数字注意条件 you may not use the same element twice
+
+### [167. Two Sum II - Input array is sorted (Easy)](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)
+```html
+Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.
+
+The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2.
+
+Note:
+
+Your returned answers (both index1 and index2) are not zero-based.
+You may assume that each input would have exactly one solution and you may not use the same element twice.
+Example:
+
+Input: numbers = [2,7,11,15], target = 9
+Output: [1,2]
+Explanation: The sum of 2 and 7 is 9. Therefore index1 = 1, index2 = 2.
+```
+思路：
+
+### [Lintcode 607. Two Sum III - Data structure design (Easy)](https://www.lintcode.com/problem/two-sum-iii-data-structure-design/description)
+```html
+Design and implement a TwoSum class. It should support the following operations: add and find.
+
+add - Add the number to an internal data structure.
+find - Find if there exists any pair of numbers which sum is equal to the value.
+
+Example
+add(1); add(3); add(5);
+find(4) // return true
+find(7) // return false
