@@ -821,6 +821,7 @@ class Solution(object):
                     slow = slow.next
                 return head
         return None
+```        
 总结：slow fast 同时在 head，先走再判断。不然容易出错。有数学关系，面试当场不一定能推导出来。就算推导出来也要注意前面的 slow，fast写法。
     a            b
 A ------ B --------+
@@ -841,3 +842,42 @@ A ------ B --------+
 我们知道快指针是慢指针速度的2倍，因此 2(a + b) = a + b + nR 那么 a + b = nR
 同时 b + c = R 所以 a = (n - 1)R + c;
 也就是说，从A点和C点同时出发，以相同的速度前进，相遇的位置将是B。
+## 题目
+### [283. Move Zeroes (Easy)](https://leetcode.com/problems/move-zeroes/description/)
+```html
+Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+
+Example:
+
+Input: [0,1,0,3,12]
+Output: [1,3,12,0,0]
+Note:
+
+You must do this in-place without making a copy of the array.
+Minimize the total number of operations.
+```
+思路：第一感觉是快指针直接跑到最后， 慢指针遇到 0 就接快指针面；仔细读题才发现是数组 in place 转换；那就快指针到第一个非 0 的数，直到快指针到最后
+```python
+class Solution(object):
+    def moveZeroes(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        if len(nums) == 0 or len(nums) == 1:
+            return
+        slow, fast = 0, 0
+        while fast < len(nums) and nums[fast] == 0:
+            fast += 1
+        while slow < len(nums) - 1 and fast < len(nums):
+            if nums[slow] == 0:
+                nums[slow], nums[fast] = nums[fast], nums[slow]
+                while fast < len(nums) and nums[fast] == 0:
+                    fast += 1
+            slow += 1
+            if slow > fast:
+                fast += 1
+                while fast < len(nums) and nums[fast] == 0:
+                    fast += 1
+```
+总结：思路简单，但是情况很多， 需要考虑，无 0， 0 在前， 后， 中四种情况 [1,2], [0, 1, 2], [1, 0, 0], [1, 0, 0, 1] 才能写对
