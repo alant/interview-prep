@@ -881,3 +881,43 @@ class Solution(object):
                     fast += 1
 ```
 总结：思路简单，但是情况很多， 需要考虑，无 0， 0 在前， 后， 中四种情况 [1,2], [0, 1, 2], [1, 0, 0], [1, 0, 0, 1] 才能写对
+
+### [125. Valid Palindrome (Easy)](https://leetcode.com/problems/valid-palindrome/description/)
+```html
+Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+Note: For the purpose of this problem, we define empty string as valid palindrome.
+
+Example 1:
+
+Input: "A man, a plan, a canal: Panama"
+Output: true
+Example 2:
+
+Input: "race a car"
+Output: false
+```
+思路：头尾双指针， 碰头了返回 True，相同继续走，不同返回 False
+```python
+class Solution(object):
+    def isPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        if len(s) == 0 or len(s) == 1:
+            return True
+        head, tail = 0, len(s) - 1
+        while head < tail:
+            while not s[head].isalnum() and head < tail:
+                head += 1
+            while not s[tail].isalnum() and head < tail:
+                tail -= 1
+            if s[head].lower() != s[tail].lower():
+                return False
+            else:
+                head += 1
+                tail -= 1
+        return True
+```
+总结：思路简单， 但是要想到的 case 很多。考虑带标点符号，连续两个位置都是标点符号，整个字符串都是标点符合这三个情况才能写对
