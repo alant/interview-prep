@@ -587,3 +587,49 @@ O(logn)
 ```
 思路：第一感觉是：需要用某种数学方法，取模只取决于这个数取模后剩下的数加多少次，可以将次方换成乘法，再取模，乘法可以换算成 n 次幂取模 b 再乘 a。
 总结：递归版本： (a * b) % p = (a % p * b % p) % p 将 a^n % b 分解为 (a^(n/2) * a^(n/2) * (a)) %b = ((a^(n/2) * a^(n/2))%b * (a)%b) %b = ((a^(n/2)%b * a^(n/2)%b)%b * (a)%b) %b； 非递归版本，思路是转换为二进制
+
+## [50. Pow(x, n) (Medium)](https://leetcode.com/problems/powx-n/description/)
+```html
+Implement pow(x, n), which calculates x raised to the power n (xn).
+
+Example 1:
+
+Input: 2.00000, 10
+Output: 1024.00000
+Example 2:
+
+Input: 2.10000, 3
+Output: 9.26100
+Example 3:
+
+Input: 2.00000, -2
+Output: 0.25000
+Explanation: 2-2 = 1/22 = 1/4 = 0.25
+Note:
+
+-100.0 < x < 100.0
+n is a 32-bit signed integer, within the range [−231, 231 − 1]
+```
+思路：递归
+```python
+class Solution:
+    def myPow(self, x, n):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        if n < 0:
+            return 1 / self.power(x, -n)
+        else:
+            return self.power(x, n)
+    def power(self, x, n):    
+        if n == 0:
+            return 1
+        result = self.power(x, n // 2)
+        if n % 2 == 0:
+            return result * result
+        else:
+            return x * result * result
+```
+总结：有固定写法套路的题目， 不值得做。
