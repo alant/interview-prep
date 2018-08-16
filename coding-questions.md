@@ -754,3 +754,35 @@ class Solution(object):
         return None
 ```
 总结：1.注意空输入（不能假设 headA 或 B 有 next）2.注意 headA headB 是一个节点 i.e. 合体的情况
+### [141. Linked List Cycle (Easy)](https://leetcode.com/problems/linked-list-cycle/description/)
+```html
+Given a linked list, determine if it has a cycle in it.
+
+Follow up:
+Can you solve it without using extra space?
+```
+思路：记得应该是慢的 +1 快的 +2 如果有 loop 会重逢。。。可能不那么值得做，热身吧
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        if head == None or head.next == None:
+            return False
+        slow, fast = head, head.next.next
+        while fast != None and fast.next != None and fast.next.next != None:
+            if slow == fast:
+                return True
+            slow = slow.next
+            fast = fast.next.next
+        return False
+```
+总结：有点意思，适合热身，代码写好后要测的情况比较多， 1 -> 2 无 loop，1 -> 2 -> 3 -> 4 loop 回 2 这些情况都要测一下。防止 next 和 next.next 不存在的情况
