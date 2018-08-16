@@ -1,5 +1,5 @@
 # todo
-## [658. Find K Closest Elements (Medium)](https://leetcode.com/problems/find-k-closest-elements/description/)
+### [658. Find K Closest Elements (Medium)](https://leetcode.com/problems/find-k-closest-elements/description/)
 ```html
 Given a sorted array, two integers k and x, find the k closest elements to x in the array. The result should also be sorted in ascending order. If there is a tie, the smaller elements are always preferred.
 
@@ -17,7 +17,7 @@ UPDATE (2017/9/19):
 The arr parameter had been changed to an array of integers (instead of a list of integers). Please reload the code definition to get the latest changes.
 ```
 
-## [409. Longest Palindrome (Easy)](https://leetcode.com/problems/longest-palindrome/description/)
+### [409. Longest Palindrome (Easy)](https://leetcode.com/problems/longest-palindrome/description/)
 ```html
 Given a string which consists of lowercase or uppercase letters, find the length of the longest palindromes that can be built with those letters.
 
@@ -41,7 +41,7 @@ One longest palindrome that can be built is "dccaccd", whose length is 7.
 基于中心点枚举法 Enumeration
 基于动态规划 Dynamic Programming
 
-## [Implement strStr](http://www.lintcode.com/problem/strstr/)
+### [Implement strStr](http://www.lintcode.com/problem/strstr/)
 ```html
 Description
 For a given source string and a target string, you should output the first index(from 0) of target string in source string.
@@ -64,7 +64,7 @@ O(n2) is acceptable. Can you implement an O(n) algorithm? (hint: KMP)
 [240. Search a 2D Matrix II (Medium)](https://leetcode.com/problems/search-a-2d-matrix-ii/description/)
 [Lintcode Search a 2D Matrix II](http://www.lintcode.com/en/problem/search-a-2d-matrix-ii/)
 
-## [600. Smallest Rectangle Enclosing Black Pixels (Hard)](https://www.lintcode.com/problem/smallest-rectangle-enclosing-black-pixels/description)
+### [600. Smallest Rectangle Enclosing Black Pixels (Hard)](https://www.lintcode.com/problem/smallest-rectangle-enclosing-black-pixels/description)
 ```html
 An image is represented by a binary matrix with 0 as a white pixel and 1 as a black pixel. The black pixels are connected, i.e., there is only one black region. Pixels are connected horizontally and vertically. Given the location (x, y) of one of the black pixels, return the area of the smallest (axis-aligned) rectangle that encloses all black pixels.
 
@@ -85,7 +85,7 @@ Return 6.
 比O(n)更优的时间复杂度几乎只能是O(logn)的二分法
 二分法模板: start + 1 < end; start + (end - start) / 2; A[mid] ==, <, >; A[start] A[end] ? target
 
-## [704. Binary Search (Easy)](https://leetcode.com/problems/binary-search/description/)
+### [704. Binary Search (Easy)](https://leetcode.com/problems/binary-search/description/)
 [lintcode's version](https://www.lintcode.com/problem/classical-binary-search/description)
 ```html
 Find any position of a target number in a sorted array. Return -1 if target does not exist.
@@ -131,7 +131,7 @@ class Solution:
 ```
 总结：背好模板，lintcode 的 test case 包含空输入数组，需要 python3 的 // 整除运算符才能过
 
-## [Lintcode 14. First Position of Target (Easy)](https://www.lintcode.com/problem/first-position-of-target/description)
+### [Lintcode 14. First Position of Target (Easy)](https://www.lintcode.com/problem/first-position-of-target/description)
 ```html
 Description
 For a given sorted array (ascending order) and a target number, find the first index of this number in O(log n) time complexity.
@@ -172,7 +172,7 @@ class Solution:
 ```
 总结：背好模板，模板 v5
 
-## [278. First Bad Version (Easy)](https://leetcode.com/problems/first-bad-version/description/)
+### [278. First Bad Version (Easy)](https://leetcode.com/problems/first-bad-version/description/)
 ```html
 You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
 
@@ -219,7 +219,7 @@ class Solution(object):
 ```
 总结：可不做
 
-## [Lintcode 460. Find K Closest Elements (Medium)](https://www.lintcode.com/problem/find-k-closest-elements/description)
+### [Lintcode 460. Find K Closest Elements (Medium)](https://www.lintcode.com/problem/find-k-closest-elements/description)
 ```html
 Given a target number, a non-negative integer k and an integer array A sorted in ascending order, find the k closest numbers to target in A, sorted in ascending order by the difference between the number and target. Otherwise, sorted in ascending order by number if the difference is same.
 
@@ -278,7 +278,7 @@ class Solution:
 ```
 总结，一开始没有充分理解题目，题目说的是 k closest elements to x in the array， 找到离 x 最近的点以后要往两边看 k 次。解题方法多少有点需要背的因素。
 
-## [153. Find Minimum in Rotated Sorted Array (Medium)](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/)
+### [153. Find Minimum in Rotated Sorted Array (Medium)](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/)
 ```html
 Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
 
@@ -318,7 +318,7 @@ class Solution:
 总结：应改为 Easy 难度的题。
 Follow up: 如果有重复的数? 无法保证在 Log(N) 的时间复杂度内解决 例子:[1,1,1,1,1....,1] 里藏着一个 0.最坏情况下需要把每个位置上的1都看一遍，才能找到最后一个有0 的位置. 考点:能想到这个最坏情况的例子
 
-## [Lintcode 585. Maximum Number in Mountain Sequence (Medium)](https://www.lintcode.com/problem/maximum-number-in-mountain-sequence/description)
+### [Lintcode 585. Maximum Number in Mountain Sequence (Medium)](https://www.lintcode.com/problem/maximum-number-in-mountain-sequence/description)
 [852. Peak Index in a Mountain Array](https://leetcode.com/problems/peak-index-in-a-mountain-array/description/)
 ```html
 Given a mountain sequence of n integers which increase firstly and then decrease, find the mountain top.
@@ -347,7 +347,7 @@ class Solution:
         return nums[end] if nums[start] < nums[end] else nums[start]
 ```
 
-## [74. Search a 2D Matrix (Medium)](https://leetcode.com/problems/search-a-2d-matrix/description/)
+### [74. Search a 2D Matrix (Medium)](https://leetcode.com/problems/search-a-2d-matrix/description/)
 ```html
 Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
 
@@ -417,7 +417,7 @@ class Solution:
 ```
 总结：注意检查空输入
 
-## [Lintcode 61. Search for a Range (Medium)](https://www.lintcode.com/problem/search-for-a-range/description)
+### [Lintcode 61. Search for a Range (Medium)](https://www.lintcode.com/problem/search-for-a-range/description)
 ```html
 Given a sorted array of n integers, find the starting and ending position of a given target value.
 
@@ -469,7 +469,7 @@ class Solution:
 ```
 总结：注意检查空输入！
 
-## [162. Find Peak Element (Medium)](https://leetcode.com/problems/find-peak-element/description/)
+### [162. Find Peak Element (Medium)](https://leetcode.com/problems/find-peak-element/description/)
 ```html
 A peak element is an element that is greater than its neighbors.
 
@@ -520,7 +520,7 @@ class Solution:
 ```
 总结：确实和前面一样， 不用做
 
-## [33. Search in Rotated Sorted Array (Medium)](https://leetcode.com/problems/search-in-rotated-sorted-array/description/)
+### [33. Search in Rotated Sorted Array (Medium)](https://leetcode.com/problems/search-in-rotated-sorted-array/description/)
 ```html
 Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
 
@@ -573,7 +573,7 @@ class Solution:
 ```
 总结： 注意 [1, 3, 5] target 为 1 这种边界条件， 判断 target 在单调这边需要加等号
 
-## [Lintcode 140. Fast Power (Medium)](https://www.lintcode.com/problem/fast-power/description)
+### [Lintcode 140. Fast Power (Medium)](https://www.lintcode.com/problem/fast-power/description)
 ```html
 Calculate the a**n % b where a, b and n are all 32bit integers.
 
@@ -588,7 +588,7 @@ O(logn)
 思路：第一感觉是：需要用某种数学方法，取模只取决于这个数取模后剩下的数加多少次，可以将次方换成乘法，再取模，乘法可以换算成 n 次幂取模 b 再乘 a。
 总结：递归版本： (a * b) % p = (a % p * b % p) % p 将 a^n % b 分解为 (a^(n/2) * a^(n/2) * (a)) %b = ((a^(n/2) * a^(n/2))%b * (a)%b) %b = ((a^(n/2)%b * a^(n/2)%b)%b * (a)%b) %b； 非递归版本，思路是转换为二进制
 
-## [50. Pow(x, n) (Medium)](https://leetcode.com/problems/powx-n/description/)
+### [50. Pow(x, n) (Medium)](https://leetcode.com/problems/powx-n/description/)
 ```html
 Implement pow(x, n), which calculates x raised to the power n (xn).
 
@@ -633,3 +633,63 @@ class Solution:
             return x * result * result
 ```
 总结：有固定写法套路的题目， 不值得做。
+# Two pointers
+## 预热
+### [26. Remove Duplicates from Sorted Array (Easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)
+```html
+Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length.
+
+Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+
+Example 1:
+
+Given nums = [1,1,2],
+
+Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively.
+
+It doesn't matter what you leave beyond the returned length.
+Example 2:
+
+Given nums = [0,0,1,1,1,2,2,3,3,4],
+
+Your function should return length = 5, with the first five elements of nums being modified to 0, 1, 2, 3, and 4 respectively.
+
+It doesn't matter what values are set beyond the returned length.
+Clarification:
+
+Confused why the returned value is an integer but your answer is an array?
+
+Note that the input array is passed in by reference, which means modification to the input array will be known to the caller as well.
+
+Internally you can think of this:
+
+// nums is passed in by reference. (i.e., without making a copy)
+int len = removeDuplicates(nums);
+
+// any modification to nums in your function would be known by the caller.
+// using the length returned by your function, it prints the first len elements.
+for (int i = 0; i < len; i++) {
+    print(nums[i]);
+}
+```
+思路：简单题， 慢指针只有在快指针碰到不同的值才走。
+```python
+class Solution:
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums) == 0:
+            return 0
+        slow, fast = 0, 1
+        while fast < len(nums):
+            if nums[fast] == nums[slow]:
+                fast += 1
+            else:
+                slow += 1
+                nums[slow] = nums[fast]
+                fast += 1
+        return slow + 1
+```
+总结：纯热身，秒解
