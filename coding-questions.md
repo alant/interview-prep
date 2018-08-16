@@ -786,3 +786,58 @@ class Solution(object):
         return False
 ```
 总结：有点意思，适合热身，代码写好后要测的情况比较多， 1 -> 2 无 loop，1 -> 2 -> 3 -> 4 loop 回 2 这些情况都要测一下。防止 next 和 next.next 不存在的情况
+### [142. Linked List Cycle II (Medium)](https://leetcode.com/problems/linked-list-cycle-ii/description/)
+```html
+Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+Note: Do not modify the linked list.
+
+Follow up:
+Can you solve it without using extra space?
+```
+思路：记得好像是找到有 loop 以后走多久能找到 cycle 的起点。
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if head == None or head.next == None:
+            return None
+        slow, fast = head, head
+        while fast.next != None and fast.next.next != None:
+            slow = slow.next
+            fast = fast.next.next            
+            if slow == fast:
+                while head != slow:
+                    head = head.next
+                    slow = slow.next
+                return head
+        return None
+总结：slow fast 同时在 head，先走再判断。不然容易出错。有数学关系，面试当场不一定能推导出来。就算推导出来也要注意前面的 slow，fast写法。
+    a            b
+A ------ B --------+
+         |         |
+       c |         |
+         +-------- C
+
+* A: 起始点
+* B: Cycle Begins
+* C: 1st 快慢指针相遇点
+
+* A->B: a
+* B->C: b
+* C->B: c
+* 环的长度 (b+c) 为 R
+
+第一次相遇时，慢指针所走步数为 a + b 快指针走的步数为 *a + b + nR*
+我们知道快指针是慢指针速度的2倍，因此 2(a + b) = a + b + nR 那么 a + b = nR
+同时 b + c = R 所以 a = (n - 1)R + c;
+也就是说，从A点和C点同时出发，以相同的速度前进，相遇的位置将是B。
