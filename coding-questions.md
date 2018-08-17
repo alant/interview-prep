@@ -1021,3 +1021,34 @@ Example
 add(1); add(3); add(5);
 find(4) // return true
 find(7) // return false
+```
+思路：add 的时候把 sum 都存 dict 里面， 查的时候直接返回 dict 里面有没有 sum. 会超时。
+```python
+class TwoSum:
+    keys = {}
+    """
+    @param: number: An integer
+    @return: nothing
+    """
+    def add(self, number):
+        # write your code here
+        if number not in self.keys:
+            self.keys[number] = 1
+        else:
+            self.keys[number] = 2
+    """
+    @param: value: An integer
+    @return: Find if there exists any pair of numbers which sum is equal to the value.
+    """
+    def find(self, value):
+        # write your code here
+        for key in self.keys:
+            if value - key in self.keys:
+                if value - key == key:
+                    if self.keys[key] == 2:
+                        return True
+                else:
+                    return True
+        return False
+```
+总结：虽然是一道容易题， 第一反应的思路会超时。 需要在 find 的时候判断能凑出答案的另一个 key 是不是已经在 keys 里了。而不是先存好 sum。 还要判断两个数相同的时候有没有存过两个数。
