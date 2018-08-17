@@ -1212,16 +1212,67 @@ class Solution:
         """
         if head == None or head.next == None:
             return head
-        slow, fast = head, head
-        while fast != None and fast.next != None and slow != None:
+        fakie = ListNode(-1)
+        fakie.next = head
+        slow, fast = fakie, None
+        while slow != None:
             while slow != None and slow.next != None and slow.next.val < x:
                 slow = slow.next
+            if fast == None:
+                fast = slow
             while fast != None and fast.next != None and fast.next.val >= x:
                 fast = fast.next
+            if fast.next == None or slow.next == None:
+                break
             savedFastNext = fast.next
             fast.next = fast.next.next
             savedSlowNext = slow.next
             slow.next = savedFastNext
             savedFastNext.next = savedSlowNext
             slow = slow.next
-        return head
+        return fakie.next
+```
+总结：链表的问题需要先放一个假头，注意 1->1 x = 0, 1->1 x = 2, 2->1 x = 2 这三种情况和题中的例子情况 1->4->3->2->5->2 才能写对。
+
+### [Lintcode 31. Partition Array (Medium)](https://www.lintcode.com/problem/partition-array/description)
+```html
+Description
+Given an array nums of integers and an int k, partition the array (i.e move the elements in "nums") such that:
+
+All elements < k are moved to the left
+All elements >= k are moved to the right
+Return the partitioning index, i.e the first index i nums[i] >= k.
+
+You should do really partition in array nums instead of just counting the numbers of integers smaller than k.
+
+If all elements in nums are smaller than k, then return nums.length
+Example
+If nums = [3,2,2,1] and k=2, a valid answer is 1.
+
+Challenge
+Can you partition the array in-place and in O(n)?
+```
+思路：和 partition list 很像， 数组的话就只能用双指针了. l 是最后一个 < k, r 是最后一个 >= k
+```python
+class Solution:
+    """
+    @param nums: The integer array you should partition
+    @param k: An integer
+    @return: The index after partition
+    """
+    def partitionArray(self, nums, k):
+        # write your code here
+        if len(nums) == 0:
+            return 0
+        l, r = 0, len(nums) - 1
+        while l <= r:
+            while l < len(nums) and nums[l] < k:
+                l += 1
+            while r >= 0 and nums[r] >= k:
+                r -= 1
+            if l > r:
+                break
+            nums[l], nums[r] = nums[r], nums[l]
+        return l    
+```
+总结：因为数组比链表好操作的多， 比 partition list 解法简单， 需要注意：1。while 的条件是 l <= r 2。l 往右走，r 往左走不要越界，r 往左需要 r >= 0 3.l > r 的时候需要 break
