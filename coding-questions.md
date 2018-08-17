@@ -1,4 +1,5 @@
 # todo
+### [18. 4Sum (Medium)](https://leetcode.com/problems/4sum/description/)
 ### [658. Find K Closest Elements (Medium)](https://leetcode.com/problems/find-k-closest-elements/description/)
 ```html
 Given a sorted array, two integers k and x, find the k closest elements to x in the array. The result should also be sorted in ascending order. If there is a tie, the smaller elements are always preferred.
@@ -1183,3 +1184,44 @@ class Solution:
         return ans
 ```
 总结：比 3sum 省事的是不需要优化跳过重复的元素也可以过。pyhton 可以用 None 就不用想 Java 那样吧 ans 初始化为 MAX_VALUE 了
+### [86. Partition List (Medium)](https://leetcode.com/problems/partition-list/description/)
+```html
+Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+
+You should preserve the original relative order of the nodes in each of the two partitions.
+
+Example:
+
+Input: head = 1->4->3->2->5->2, x = 3
+Output: 1->2->2->4->3->5
+```
+思路：慢快指针，慢指针在最后一个 < x 的位置， 快指针在最后一个 >= x 的位置，快指针碰到一个 < x 的就和慢指针换
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def partition(self, head, x):
+        """
+        :type head: ListNode
+        :type x: int
+        :rtype: ListNode
+        """
+        if head == None or head.next == None:
+            return head
+        slow, fast = head, head
+        while fast != None and fast.next != None and slow != None:
+            while slow != None and slow.next != None and slow.next.val < x:
+                slow = slow.next
+            while fast != None and fast.next != None and fast.next.val >= x:
+                fast = fast.next
+            savedFastNext = fast.next
+            fast.next = fast.next.next
+            savedSlowNext = slow.next
+            slow.next = savedFastNext
+            savedFastNext.next = savedSlowNext
+            slow = slow.next
+        return head
