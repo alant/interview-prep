@@ -1145,3 +1145,41 @@ class Solution:
         return sum
 ```
 总结：看清题目，问的是有多少个这样的三角形， 返回数就行。 全排列效率比较低。 更优解是每次定下最长边， 寻找符合条件的另外两个边的数量。 双指针的解法是将 tail 推到最小不能组成三角形的位置， 退一步， 然后从 tail 到 head 的位置的都可以组， 因为他们相加只会比最长边更长。 然后将 head 进一步（缩短），tail 边加长到大于最长边的位置，新 tail 到 head 的位置又都可以组。
+
+### [16. 3Sum Closest (Medium)](https://leetcode.com/problems/3sum-closest/description/)
+```html
+Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers. You may assume that each input would have exactly one solution.
+
+Example:
+
+Given array nums = [-1, 2, 1, -4], and target = 1.
+
+The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+```
+思路：3sum 的思路是先排序，固定一个点以后，开始用双指针搜索符合条件的数。closest 感觉已经是 4sum，需要记 delta，然后往 delata 小的方向走。
+```python
+class Solution:
+    def threeSumClosest(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        ans = None
+        nums.sort()
+        for index1, val in enumerate(nums):
+            head = index1 + 1
+            tail = len(nums) - 1
+            while head < tail:
+                sum = nums[index1] + nums[head] + nums[tail]
+                if ans == None or abs(target - sum) < abs(target - ans):
+                    ans = sum
+                if sum < target:
+                    head += 1
+                elif sum > target:
+                    tail -= 1
+                else:
+                    return target
+        return ans
+```
+总结：比 3sum 省事的是不需要优化跳过重复的元素也可以过。pyhton 可以用 None 就不用想 Java 那样吧 ans 初始化为 MAX_VALUE 了
