@@ -1276,3 +1276,46 @@ class Solution:
         return l    
 ```
 总结：因为数组比链表好操作的多， 比 partition list 解法简单， 需要注意：1。while 的条件是 l <= r 2。l 往右走，r 往左走不要越界，r 往左需要 r >= 0 3.l > r 的时候需要 break
+
+### [215. Kth Largest Element in an Array (Medium)](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
+```html
+Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+Example 1:
+Input: [3,2,1,5,6,4] and k = 2
+Output: 5
+
+Example 2:
+Input: [3,2,3,1,2,4,5,5,6] and k = 4
+Output: 4
+Note:
+You may assume k is always valid, 1 ≤ k ≤ array's length.
+```
+思路：应该是不去排序的基础上找到第 K 大的数。现场想是基本没戏的。网上答案：quickselect 算法，基于 quicksort. 1.选第一个数为 pivot 2.比 pivot 大的放左边， 不然右边 3.如果 pivot 是第 k, 返回该值， 大于 k 扔掉右边， 否则扔掉左边
+```python
+class Solution:
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        k -= 1
+        def quickSelect(s, e):
+            l, r = s + 1, e
+            while l <= r:
+                if nums[l] > nums[s]:
+                    l += 1
+                else:
+                    nums[l], nums[r] = nums[r], nums[l]
+                    r -= 1
+            nums[s], nums[r] = nums[r], nums[s]
+            if r == k:
+                return nums[r]
+            elif r > k:
+                return quickSelect(s, r - 1)
+            else:
+                return quickSelect(r + 1, e)
+        return quickSelect(0, len(nums) - 1)
+
+总结：要背 pivot 的部分，如果第一个数是 pivot，那么走一遍，碰到比他大的不动，小的塞右边，l <= r 走完把 pivot 和 r 值互换，r 左边就是大于 pivot 数的子数组. 注意：递归调用的时候记得函数名前要加 return 否则不会返回任何值。
