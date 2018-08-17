@@ -1052,3 +1052,54 @@ class TwoSum:
         return False
 ```
 总结：虽然是一道容易题， 第一反应的思路会超时。 需要在 find 的时候判断能凑出答案的另一个 key 是不是已经在 keys 里了。而不是先存好 sum。 还要判断两个数相同的时候有没有存过两个数。
+
+### [15. 3Sum (Medium)](https://leetcode.com/problems/3sum/description/)
+```html
+Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+
+Note:
+
+The solution set must not contain duplicate triplets.
+
+Example:
+
+Given array nums = [-1, 0, 1, 2, -1, -4],
+
+A solution set is:
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+```
+思路：可以吧 a + b + c = 0 变为 a + b = - c 的问题，问题则变为， 对于任意数 a，dict 里是否存在 -c - a 这么个数， a 和 c 是两层循环
+```python
+class Solution:
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        results = []
+        nums.sort()
+        for index1 in range(len(nums) - 2):
+            if index1 and nums[index1] == nums[index1 - 1]:
+                continue
+            head = index1 + 1
+            tail = len(nums) - 1
+            while head < tail:
+                if nums[index1] + nums[head] > -nums[tail]:
+                    tail -= 1
+                elif nums[index1] + nums[head] < -nums[tail]:
+                    head += 1
+                else:
+                    results.append([nums[index1], nums[head], nums[tail]])
+                    head += 1
+                    tail -= 1
+                    while head < tail and nums[head] == nums[head - 1]:
+                        head += 1
+                    while head < tail and nums[tail] == nums[tail + 1]:
+                        tail -= 1
+        return results
+```
+总结：三层循环是暴力方法，去重会受阻，这个时候需要想到给输入数组先排个序，因为结果里，没有要求元素的顺序，这是个重要的提示。排序以后每次固定一个数 index1，然后找的过程是：while head < tail: head = index1 + 1, tail = len(nums) - 1, if nums[index1] + nums[head] > - nums[tail]: tail -= 1, elif nums[index1] + nums[head] < -nums[tail]: head += 1, else: results.append()
+代码还需要考虑的几个情况：1.对于已经用过的元素需要跳过， 这里要用到 if index1 and nums[index1] == nums[index1 - 1]; 2.如果碰到了一个 result，要跳过所有重复的元素，需要用到 while head < tail and nums[head] == nums[head - 1]: 和相应的 ...nums[tail + 1]
