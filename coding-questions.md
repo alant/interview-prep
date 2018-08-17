@@ -1103,3 +1103,45 @@ class Solution:
 ```
 总结：三层循环是暴力方法，去重会受阻，这个时候需要想到给输入数组先排个序，因为结果里，没有要求元素的顺序，这是个重要的提示。排序以后每次固定一个数 index1，然后找的过程是：while head < tail: head = index1 + 1, tail = len(nums) - 1, if nums[index1] + nums[head] > - nums[tail]: tail -= 1, elif nums[index1] + nums[head] < -nums[tail]: head += 1, else: results.append()
 代码还需要考虑的几个情况：1.对于已经用过的元素需要跳过， 这里要用到 if index1 and nums[index1] == nums[index1 - 1]; 2.如果碰到了一个 result，要跳过所有重复的元素，需要用到 while head < tail and nums[head] == nums[head - 1]: 和相应的 ...nums[tail + 1]
+
+### [Lintcode 382. Triangle Count (Medium)](https://www.lintcode.com/problem/triangle-count/description)
+```html
+Given an array of integers, how many three numbers can be found in the array, so that we can build an triangle whose three edges length is the three numbers that we find?
+
+Example
+Given array S = [3,4,6,7], return 3. They are:
+
+[3,4,6]
+[3,6,7]
+[4,6,7]
+Given array S = [4,4,4,4], return 4. They are:
+
+[4(1),4(2),4(3)]
+[4(1),4(2),4(4)]
+[4(1),4(3),4(4)]
+[4(2),4(3),4(4)]
+```
+思路： 判断能不能做三角形以后全排列
+```python
+class Solution:
+    """
+    @param S: A list of integers
+    @return: An integer
+    """
+    def triangleCount(self, S):
+        # write your code here
+        S.sort(reverse=True)
+        sum = 0
+        for index1, longest in enumerate(S):
+            head, tail = index1 + 1, index1 + 2
+            while tail < len(S) and S[head] + S[tail] > longest:
+                tail += 1
+            tail -= 1
+            while head < tail:
+                sum += tail - head
+                head += 1
+                while head < tail and S[head] + S[tail] <= longest:
+                    tail -= 1
+        return sum
+```
+总结：看清题目，问的是有多少个这样的三角形， 返回数就行。 全排列效率比较低。 更优解是每次定下最长边， 寻找符合条件的另外两个边的数量。 双指针的解法是将 tail 推到最小不能组成三角形的位置， 退一步， 然后从 tail 到 head 的位置的都可以组， 因为他们相加只会比最长边更长。 然后将 head 进一步（缩短），tail 边加长到大于最长边的位置，新 tail 到 head 的位置又都可以组。
