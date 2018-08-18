@@ -1,4 +1,8 @@
 # todo
+## Two pointers
+### [Partition Array by Odd and Even](http://www.lintcode.com/problem/partition-array-by-odd-and-even/)
+### [Interleaving Positive and Negative Numbers](http://www.lintcode.com/problem/interleaving-positive-and-negative-numbers/)
+### [Sort Letters by Case](http://www.lintcode.com/problem/sort-letters-by-case/)
 ### [18. 4Sum (Medium)](https://leetcode.com/problems/4sum/description/)
 ### [658. Find K Closest Elements (Medium)](https://leetcode.com/problems/find-k-closest-elements/description/)
 ```html
@@ -1317,5 +1321,51 @@ class Solution:
             else:
                 return quickSelect(r + 1, e)
         return quickSelect(0, len(nums) - 1)
+```
+总结：要背 pivot 的部分，如果第一个数是 pivot，那么走一遍，碰到比他大的不动，小的塞右边，l <= r 走完把 pivot 和 r 值互换，r 左边就是大于 pivot 数的子数组. 注意：递归调用的时候记得函数名前要加 return 否则不会返回任何值。由于完全抛弃另一侧，时间复杂度平均由 quick sort 的 O(nlogn) 降为 O(n) 因为输入变小了， quicksort 的输入一直是 n, 最差情况 O(n^2)
 
-总结：要背 pivot 的部分，如果第一个数是 pivot，那么走一遍，碰到比他大的不动，小的塞右边，l <= r 走完把 pivot 和 r 值互换，r 左边就是大于 pivot 数的子数组. 注意：递归调用的时候记得函数名前要加 return 否则不会返回任何值。
+### [75. Sort Colors (Medium)](https://leetcode.com/problems/sort-colors/description/)
+```html
+Given an array with n objects colored red, white or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white and blue.
+
+Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
+
+Note: You are not suppose to use the library's sort function for this problem.
+
+Example:
+
+Input: [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+Follow up:
+
+A rather straight forward solution is a two-pass algorithm using counting sort.
+First, iterate the array counting number of 0's, 1's, and 2's, then overwrite array with total number of 0's, then 1's and followed by 2's.
+Could you come up with a one-pass algorithm using only constant space?
+```
+思路：因为只有 3 种颜色，1 pass 就是设好 l, r 两个指针，分别代表颜色的边界，碰到不属于边界的就往正确的边界内交换
+```python
+class Solution:
+    def sortColors(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        if len(nums) == 0 or len(nums) == 1:
+            return
+        index, l, r = 0, 0, len(nums) - 1
+        while l < r and index <= r:
+            while nums[l] == 0 and l < r:
+                l += 1
+            while nums[r] == 2 and l < r:
+                r -= 1
+            if l > index:
+                index = l
+            if nums[index] == 0:
+                nums[l], nums[index] = nums[index], nums[l]
+            if nums[index] == 1:
+                index += 1
+                continue
+            if nums[index] == 2:
+                nums[index], nums[r] = nums[r], nums[index]
+```
+总结：counting sort：数一下每个元素有多少个，一次给写到结果里; 这种写法基本上秒出 :)，想当年傻逼呵呵的这种简单题都面试的时候挂掉，哎。。。如今得换种 1 pass 高级点的；一开始想的思路有个问题，就是如果只有两个指针，两个指针都指 1， 中间夹一大堆 2 就没办法了。 改成三指针， l, r 维持边界，index 从 l 走到 r; 要一次写对得注意：1.当 l 大于 index 的时候， index 要追上来 2.整个循环的终止条件需要 l < r and index <= r, 不然过不了 [2, 0, 1] (index <= r), [0, 0], [1, 1] (l < r) 这两个情况
