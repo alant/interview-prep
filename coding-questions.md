@@ -1,5 +1,7 @@
 # todo
 ## Two pointers
+### [Lintcode Sort Colors II (medium)](https://www.lintcode.com/problem/sort-colors-ii/description)
+有难度，解法用的是桶排序，需要理解下， 有空的话还有： 烙饼排序 Pancake Sort， 睡眠排序 Sleep Sort， 面条排序 Spaghetti Sort， 猴子排序 Bogo Sort
 ### [Partition Array by Odd and Even](http://www.lintcode.com/problem/partition-array-by-odd-and-even/)
 ### [Interleaving Positive and Negative Numbers](http://www.lintcode.com/problem/interleaving-positive-and-negative-numbers/)
 ### [Sort Letters by Case](http://www.lintcode.com/problem/sort-letters-by-case/)
@@ -1369,3 +1371,63 @@ class Solution:
                 nums[index], nums[r] = nums[r], nums[index]
 ```
 总结：counting sort：数一下每个元素有多少个，一次给写到结果里; 这种写法基本上秒出 :)，想当年傻逼呵呵的这种简单题都面试的时候挂掉，哎。。。如今得换种 1 pass 高级点的；一开始想的思路有个问题，就是如果只有两个指针，两个指针都指 1， 中间夹一大堆 2 就没办法了。 改成三指针， l, r 维持边界，index 从 l 走到 r; 要一次写对得注意：1.当 l 大于 index 的时候， index 要追上来 2.整个循环的终止条件需要 l < r and index <= r, 不然过不了 [2, 0, 1] (index <= r), [0, 0], [1, 1] (l < r) 这两个情况
+
+# BFS
+图的遍历 Traversal in Graph
+* 层级遍历 Level Order Traversal
+* 由点及面 Connected Component
+* 拓扑排序 Topological Sorting
+最短路径 Shortest Path in Simple Graph
+* 仅限简单图求最短路径
+* 即，图中每条边长度都是1，或者边长都相等
+### [102. Binary Tree Level Order Traversal (Medium)](https://leetcode.com/problems/binary-tree-level-order-traversal/description/)
+```html
+Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
+
+For example:
+Given binary tree [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its level order traversal as:
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+思路：热身阶段，先看答案
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def levelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        ans = []
+        if root == None:
+            return ans
+        q = [root]
+        while q:
+            new_q = []
+            temp = []
+            for node in q:
+                temp.append(node.val)
+                if node.left:
+                    new_q.append(node.left)
+                if node.right:
+                    new_q.append(node.right)
+            ans.append(temp)
+            q = new_q
+        return ans
+```
+总结：看来答案还是很简单的，注意只需要处理 root 为空，记得返回 ans
