@@ -1,4 +1,60 @@
 # todo
+## BFS
+### [Binary Tree Level Order Traversal II](http://www.lintcode.com/en/problem/binary-tree-level-order-traversal-ii/)
+### [Binary Tree Zigzag Order Traversal](http://www.lintcode.com/en/problem/binary-tree-zigzag-level-order-traversal/)
+### [Convert Binary Tree to Linked Lists by Depth](http://www.lintcode.com/en/problem/convert-binary-tree-to-linked-lists-by-depth/)
+### [Lintcode 7. Serialize and Deserialize Binary Tree (Medium)](https://www.lintcode.com/problem/serialize-and-deserialize-binary-tree/description)
+```html
+Design an algorithm and write code to serialize and deserialize a binary tree. Writing the tree to a file is called 'serialization' and reading back from the file to reconstruct the exact same binary tree is 'deserialization'.
+
+There is no limit of how you deserialize or serialize a binary tree, LintCode will take your output of serialize as the input of deserialize, it won't check the result of serialize.
+
+Example
+An example of testdata: Binary tree {3,9,20,#,#,15,7}, denote the following structure:
+
+  3
+ / \
+9  20
+  /  \
+ 15   7
+Our data serialization use bfs traversal. This is just for when you got wrong answer and want to debug the input.
+
+You can use other method to do serializaiton and deserialization.
+```
+思路：BFS 来 serialize, 有坑， 先放 todo
+```python
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+
+class Solution:
+    """
+    @param root: An object of TreeNode, denote the root of the binary tree.
+    This method will be invoked first, you should design your own algorithm
+    to serialize a binary tree which denote by a root node to a string which
+    can be easily deserialized by your own "deserialize" method later.
+    """
+    def serialize(self, root):
+        # write your code here
+        if root == None:
+            return "{}"
+
+    """
+    @param data: A string serialized by your serialize method.
+    This method will be invoked second, the argument data is what exactly
+    you serialized at method "serialize", that means the data is not given by
+    system, it's given by your own serialize method. So the format of data is
+    designed by yourself, and deserialize it here as you serialize it in
+    "serialize" method.
+    """
+    def deserialize(self, data):
+        # write your code here
+```    
 ## Two pointers
 ### [Lintcode Sort Colors II (medium)](https://www.lintcode.com/problem/sort-colors-ii/description)
 有难度，解法用的是桶排序，需要理解下， 有空的话还有： 烙饼排序 Pancake Sort， 睡眠排序 Sleep Sort， 面条排序 Spaghetti Sort， 猴子排序 Bogo Sort
@@ -1431,3 +1487,60 @@ class Solution:
         return ans
 ```
 总结：看来答案还是很简单的，注意只需要处理 root 为空，记得返回 ans
+
+### [133. Clone Graph (Medium)](https://leetcode.com/problems/clone-graph/description/)
+```html
+Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.
+
+
+OJ's undirected graph serialization:
+Nodes are labeled uniquely.
+
+We use # as a separator for each node, and , as a separator for node label and each neighbor of the node.
+As an example, consider the serialized graph {0,1,2#1,2#2,2}.
+
+The graph has a total of three nodes, and therefore contains three parts as separated by #.
+
+First node is labeled as 0. Connect node 0 to both nodes 1 and 2.
+Second node is labeled as 1. Connect node 1 to node 2.
+Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a self-cycle.
+Visually, the graph looks like the following:
+
+       1
+      / \
+     /   \
+    0 --- 2
+         / \
+         \_/
+```
+思路：BFS, 用一个 dict 存当前节点的邻居，如果没见过就加 dict 存 queue，queue 出来建 node，放 neighbor；概念上比较好懂，写码可能有坑
+```python
+# Definition for a undirected graph node
+# class UndirectedGraphNode:
+#     def __init__(self, x):
+#         self.label = x
+#         self.neighbors = []
+
+class Solution:
+    # @param node, a undirected graph node
+    # @return a undirected graph node
+    def cloneGraph(self, node):
+        if node == None:
+            return None
+        dict = {}
+        _cloneNode = UndirectedGraphNode(node.label)
+        dict[node] = _cloneNode
+        q = [node]
+        while q:
+            new_q = []
+            for _node in q:
+                for neighbor in _node.neighbors:
+                    if neighbor not in dict:
+                        _cloneNode = UndirectedGraphNode(neighbor.label)
+                        dict[neighbor] = _cloneNode
+                        new_q.append(neighbor)
+                    dict[_node].neighbors.append(dict[neighbor])    
+            q = new_q
+        return dict[node]
+```
+总结：思路用 dict 来存当前节点的邻居是错的，需要用 dict 存当前节点和克隆节点的映射关系。因为反正映射关系在，加邻居可以后加. 邻居是不能直接 copy 或者 = 的， 因为邻居的类型也是节点， 需要创造以后加进去。测一下，然后 debug 细一点， 要测出 dict[_node].neighbors.append(dict[neighbor])
