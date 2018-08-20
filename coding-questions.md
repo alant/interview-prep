@@ -1543,4 +1543,71 @@ class Solution:
             q = new_q
         return dict[node]
 ```
-总结：思路用 dict 来存当前节点的邻居是错的，需要用 dict 存当前节点和克隆节点的映射关系。因为反正映射关系在，加邻居可以后加. 邻居是不能直接 copy 或者 = 的， 因为邻居的类型也是节点， 需要创造以后加进去。测一下，然后 debug 细一点， 要测出 dict[_node].neighbors.append(dict[neighbor])
+总结：思路用 dict 来存当前节点的邻居是错的，需要用 dict 存当前节点和克隆节点的映射关系。因为反正映射关系在，加邻居可以后加. 邻居是不能直接 copy 或者 = 的， 因为邻居的类型也是节点， 需要创造以后加进去。测一下，然后 debug 细一点， 要测出
+```python
+dict[_node].neighbors.append(dict[neighbor])
+```
+### [127. Word Ladder (Medium)](https://leetcode.com/problems/word-ladder/description/)
+```html
+Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
+
+Only one letter can be changed at a time.
+Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
+Note:
+
+Return 0 if there is no such transformation sequence.
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+You may assume no duplicates in the word list.
+You may assume beginWord and endWord are non-empty and are not the same.
+Example 1:
+
+Input:
+beginWord = "hit",
+endWord = "cog",
+wordList = ["hot","dot","dog","lot","log","cog"]
+
+Output: 5
+
+Explanation: As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+return its length 5.
+Example 2:
+
+Input:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log"]
+
+Output: 0
+
+Explanation: The endWord "cog" is not in wordList, therefore no possible transformation.
+```
+思路：确实是寻找路径的问题，从 beginWord 到 endWord 是否存在最短路径让他俩相连，最短路径取决于词库里有哪些词（路径）。怎么实现很不清晰
+```python
+import string
+class Solution(object):
+    def ladderLength(self, beginWord, endWord, wordList):
+        """
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: int
+        """
+        if beginWord == endWord:
+            return 0
+        wordSet = set(wordList)
+        q = collections.deque([[beginWord, 1]])
+        while q:
+            word, level = q.popleft()
+            for index in range(len(word)):
+                for char in 'abcdefghijklmnopqrstuvwxyz':
+                    newWord = word[:index] + char + word[index + 1:]
+                    if newWord in wordSet:
+                        if newWord == endWord:
+                            return level + 1
+                        wordSet.remove(newWord)
+                        q.append([newWord, level + 1])
+        return 0
+
+```
+总结：看了下答案，网上答案解释的比较好理解的是，起始词是树的根节点，每一层是从第一个字母到最后一个字母，每次一个字母，从 a - z 替换过一遍，同时又在 wordList 里的词。从上往下 BFS，找到 endWord 即返回当前 level。啧啧啧，强大的应用题。逻辑对还得不 TLE 需要1.将 wordList 转成 set；2.使用 collections.deque；3.碰到 wordSet 中的词，先该词在 wordSet 中删除，再入 deque
