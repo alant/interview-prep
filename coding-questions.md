@@ -1767,9 +1767,9 @@ Clarification
 
 Example
 For graph as follow:
-
+```
 ![graph example](images/lintcode_127_topo_1.jpeg)
-
+```html
 The topological order can be:
 [0, 1, 2, 3, 4, 5]
 [0, 2, 3, 1, 5, 4]
