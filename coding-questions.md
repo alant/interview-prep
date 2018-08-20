@@ -1670,3 +1670,84 @@ class Solution(object):
         return ans
 ```
 总结：对于 leetcode ac 比较重要的细节是，gird[][] = '0' 这句话要在 while 的每个 if 里面，否则逻辑 OK 但是会 TLE
+
+### [Lintcode 611. Knight Shortest Path (Medium)](https://www.lintcode.com/problem/knight-shortest-path/description)
+```html
+Given a knight in a chessboard (a binary matrix with 0 as empty and 1 as barrier) with a source position, find the shortest path to a destination position, return the length of the route.
+Return -1 if knight can not reached.
+
+source and destination must be empty.
+Knight can not enter the barrier.
+
+Clarification
+If the knight is at (x, y), he can get to the following positions in one step:
+
+(x + 1, y + 2)
+(x + 1, y - 2)
+(x - 1, y + 2)
+(x - 1, y - 2)
+(x + 2, y + 1)
+(x + 2, y - 1)
+(x - 2, y + 1)
+(x - 2, y - 1)
+Example
+[[0,0,0],
+ [0,0,0],
+ [0,0,0]]
+source = [2, 0] destination = [2, 2] return 2
+
+[[0,1,0],
+ [0,0,0],
+ [0,0,0]]
+source = [2, 0] destination = [2, 2] return 6
+
+[[0,1,0],
+ [0,0,1],
+ [0,0,0]]
+source = [2, 0] destination = [2, 2] return -1
+```
+思路：没什么思路， 看了下答案，就是 BFS 硬来，需要检查走了某个方向以后是不是还是在棋盘内
+```python
+"""
+Definition for a point.
+class Point:
+    def __init__(self, a=0, b=0):
+        self.x = a
+        self.y = b
+"""
+
+class Solution:
+    """
+    @param grid: a chessboard included 0 (false) and 1 (true)
+    @param source: a point
+    @param destination: a point
+    @return: the shortest path
+    """
+    def shortestPath(self, grid, source, destination):
+        # write your code here
+        if len(grid) == 0 or (len(grid[0]) == 1 and grid[0][0] == 1):
+            return -1
+        ans = 0
+        dx = [1, 1, -1, -1, 2, 2, -2, -2]
+        dy = [2, -2, 2, -2, 1, -1, 1, -1]
+        q = collections.deque([source])
+        grid[source.x][source.y] = 1
+        while q:
+            qlen = len(q)
+            next_q = collections.deque()
+            for i in range(qlen):
+                pt = q.popleft()
+                if pt.x == destination.x and pt.y == destination.y:
+                    return ans
+                for move in range(len(dx)):
+                    nextPt = Point(pt.x + dx[move], pt.y + dy[move])
+                    if (self.isInbound(grid, nextPt) and grid[nextPt.x][nextPt.y] == 0):
+                        next_q.append(nextPt)
+                        grid[nextPt.x][nextPt.y] = 1
+            ans += 1
+            q = next_q
+        return -1
+    def isInbound(self, grid, pt):
+        return pt.x >= 0 and pt.x < len(grid) and pt.y >= 0 and pt.y < len(grid[0])
+```
+总结：注意 isInbound 要查的是 >=0 和 < len()， 其他的问题可以通过跑一个测试数据发现
