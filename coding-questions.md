@@ -1611,3 +1611,62 @@ class Solution(object):
 
 ```
 总结：看了下答案，网上答案解释的比较好理解的是，起始词是树的根节点，每一层是从第一个字母到最后一个字母，每次一个字母，从 a - z 替换过一遍，同时又在 wordList 里的词。从上往下 BFS，找到 endWord 即返回当前 level。啧啧啧，强大的应用题。逻辑对还得不 TLE 需要1.将 wordList 转成 set；2.使用 collections.deque；3.碰到 wordSet 中的词，先该词在 wordSet 中删除，再入 deque
+
+### [200. Number of Islands (Medium)](https://leetcode.com/problems/number-of-islands/description/)
+```html
+Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+Example 1:
+Input:
+11110
+11010
+11000
+00000
+Output: 1
+
+Example 2:
+Input:
+11000
+11000
+00100
+00011
+Output: 3
+```
+思路：遍历矩阵，碰到 1 就上下左右 BFS，碰到 0 跳过。BFS 访问过的标 0
+```python
+class Solution(object):
+    def numIslands(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        if len(grid) == 0:
+            return 0
+        ans = 0
+        for rowI in range(len(grid)):
+            for colI in range(len(grid[0])):
+                if grid[rowI][colI] == "1":
+                    ans += 1
+                    q = collections.deque([[rowI, colI]])
+                    grid[rowI][colI] = "0"
+                    while q:
+                        row, col = q.popleft()
+                        # up
+                        if (row > 0) and grid[row - 1][col] == "1":
+                                q.append([row - 1, col])
+                                grid[row - 1][col] = '0'
+                        # down
+                        if (row < len(grid) - 1) and grid[row + 1][col] == "1":
+                                q.append([row + 1, col])
+                                grid[row + 1][col] = '0'
+                        # left
+                        if (col > 0) and grid[row][col - 1] == "1":
+                                q.append([row, col - 1])
+                                grid[row][col - 1] = '0'
+                        # right
+                        if (col < len(grid[0]) - 1) and grid[row][col + 1] == "1":
+                                q.append([row, col + 1])
+                                grid[row][col + 1] = '0'
+        return ans
+```
+总结：对于 leetcode ac 比较重要的细节是，gird[][] = '0' 这句话要在 while 的每个 if 里面，否则逻辑 OK 但是会 TLE
