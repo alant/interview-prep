@@ -1751,3 +1751,69 @@ class Solution:
         return pt.x >= 0 and pt.x < len(grid) and pt.y >= 0 and pt.y < len(grid[0])
 ```
 总结：注意 isInbound 要查的是 >=0 和 < len()， 其他的问题可以通过跑一个测试数据发现
+
+### [127. Topological Sorting (Medium)](https://www.lintcode.com/problem/topological-sorting/description)
+```html
+Given an directed graph, a topological order of the graph nodes is defined as follow:
+
+For each directed edge A -> B in graph, A must before B in the order list.
+The first node in the order can be any node in the graph with no nodes direct to it.
+Find any topological order for the given graph.
+
+You can assume that there is at least one topological order in the graph.
+
+Clarification
+[Learn more about representation of graphs](http://www.lintcode.com/help/graph)
+
+Example
+For graph as follow:
+
+![graph example](images/lintcode_127_topo_1.jpeg)
+
+The topological order can be:
+[0, 1, 2, 3, 4, 5]
+[0, 2, 3, 1, 5, 4]
+```
+思路：拓扑排序，算法貌似是：1.统计每个点的入度；2.将入度为 0 的点入 queue；3.从队列中 pop 点，去掉所有指向别的点的边: 相应点入度 -1；4.新入度为 0 的点入 queue
+```python
+"""
+Definition for a Directed graph node
+class DirectedGraphNode:
+    def __init__(self, x):
+        self.label = x
+        self.neighbors = []
+"""
+
+
+class Solution:
+    """
+    @param: graph: A list of Directed graph node
+    @return: Any topological order for the given graph.
+    """
+    def topSort(self, graph):
+        # write your code here
+        if len(graph) == 0:
+            return []
+        ans = []
+        inBound = {}
+        for node in graph:
+            if node not in inBound:
+                inBound[node] = 0
+            for neighbor in node.neighbors:
+                if neighbor not in inBound:
+                    inBound[neighbor] = 0
+                inBound[neighbor] += 1
+        q = collections.deque()
+        for node in inBound:
+            if inBound[node] == 0:
+                q.append(node)
+        while q:
+            zNode = q.popleft()
+            ans.append(zNode)
+            for node in zNode.neighbors:
+                inBound[node] -= 1
+                if inBound[node] == 0:
+                    q.append(node)
+        return ans
+```            
+总结：顺利。但是题目没有说清楚 return 的是一个拓扑排序好的 node 的 list
