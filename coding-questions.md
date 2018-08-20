@@ -1817,3 +1817,69 @@ class Solution:
         return ans
 ```            
 总结：顺利。但是题目没有说清楚 return 的是一个拓扑排序好的 node 的 list
+
+### [207. Course Schedule (Medium)](https://leetcode.com/problems/course-schedule/description/)
+```html
+There are a total of n courses you have to take, labeled from 0 to n-1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+
+Example 1:
+
+Input: 2, [[1,0]]
+Output: true
+Explanation: There are a total of 2 courses to take.
+             To take course 1 you should have finished course 0. So it is possible.
+Example 2:
+
+Input: 2, [[1,0],[0,1]]
+Output: false
+Explanation: There are a total of 2 courses to take.
+             To take course 1 you should have finished course 0, and to take course 0 you should
+             also have finished course 1. So it is impossible.
+Note:
+
+The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
+You may assume that there are no duplicate edges in the input prerequisites.
+```
+思路：其实是问拓扑顺序存不存在，具体实现得看答案
+```python
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        if len(prerequisites) == 0 or len(prerequisites[0]) == 0 or len(prerequisites[0]) == 1:
+            return True
+        graph = {}
+        inBound = {}
+        for prereqs in prerequisites:
+            for index, course in enumerate(prereqs):
+                if course not in graph:
+                    graph[course] = []
+                if course not in inBound:
+                    inBound[course] = 0
+                if index < len(prereqs) - 1:
+                    graph[course].append(prereqs[index + 1])
+                if index > 0:
+                    inBound[course] += 1
+        q = collections.deque()
+        for key in inBound:
+            if inBound[key] == 0:
+                q.append(key)
+        while q:
+            course = q.popleft()
+            for neighbor in graph[course]:
+                inBound[neighbor] -= 1
+                if inBound[neighbor] == 0:
+                    q.append(neighbor)
+        for key in inBound:
+            if inBound[key] > 0:
+                return False
+        return True      
+```
+总结：有向图有环则拓扑顺序不存在，题可以变为如何检测有向图有环的问题。算法的核心是计算所有节点的入度，然后做类似上题的 BFS，每遍历一次邻居，入度减一，如果遍历完以后还有点的入度 > 0，则图有环。具体实现两个 dict，一个存节点和邻居们， 一个存节点和入度， 再加个 queue; 注意下 prerequisites 是个 list of list 别的没什么
