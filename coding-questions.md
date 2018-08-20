@@ -1752,7 +1752,7 @@ class Solution:
 ```
 总结：注意 isInbound 要查的是 >=0 和 < len()， 其他的问题可以通过跑一个测试数据发现
 
-### [127. Topological Sorting (Medium)](https://www.lintcode.com/problem/topological-sorting/description)
+### [Lintcode 127. Topological Sorting (Medium)](https://www.lintcode.com/problem/topological-sorting/description)
 ```html
 Given an directed graph, a topological order of the graph nodes is defined as follow:
 
