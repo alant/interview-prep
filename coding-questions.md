@@ -1883,3 +1883,78 @@ class Solution(object):
         return True      
 ```
 总结：有向图有环则拓扑顺序不存在，题可以变为如何检测有向图有环的问题。算法的核心是计算所有节点的入度，然后做类似上题的 BFS，每遍历一次邻居，入度减一，如果遍历完以后还有点的入度 > 0，则图有环。具体实现两个 dict，一个存节点和邻居们， 一个存节点和入度， 再加个 queue; 注意下 prerequisites 是个 list of list 别的没什么
+
+### [210. Course Schedule II (Medium)](https://leetcode.com/problems/course-schedule-ii/description/)
+```html
+There are a total of n courses you have to take, labeled from 0 to n-1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, return the ordering of courses you should take to finish all courses.
+
+There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all courses, return an empty array.
+
+Example 1:
+Input: 2, [[1,0]]
+Output: [0,1]
+Explanation: There are a total of 2 courses to take. To take course 1 you should have finished   
+             course 0. So the correct course order is [0,1] .
+
+Example 2:
+Input: 4, [[1,0],[2,0],[3,1],[3,2]]
+Output: [0,1,2,3] or [0,2,1,3]
+Explanation: There are a total of 4 courses to take. To take course 3 you should have finished both     
+             courses 1 and 2. Both courses 1 and 2 should be taken after you finished course 0.
+             So one correct course order is [0,1,2,3]. Another correct ordering is [0,2,1,3] .
+Note:
+
+The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
+You may assume that there are no duplicate edges in the input prerequisites.
+```
+思路：是前两道题的延伸，既要计算所有节点的入度， BFS，又要做拓扑排序，记下拓扑的顺序。 如果结束时还有入度 > 0 的节点，则图有环，无解
+```python
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+        ans = []
+        if len(prerequisites) == 0 or len(prerequisites[0]) == 0:
+            for i in range(numCourses):
+                ans.append(i)
+            return ans[::-1]
+        graph = {}
+        inBound = {}
+        for prereqs in prerequisites:
+            for index, course in enumerate(prereqs):
+                if course not in graph:
+                    graph[course] = []
+                if course not in inBound:
+                    inBound[course] = 0
+                if index < len(prereqs) - 1:
+                    graph[course].append(prereqs[index + 1])
+                if index > 0:
+                    inBound[course] += 1
+        q = collections.deque()
+        for course in inBound:
+            if inBound[course] == 0:
+                ans.append(course)
+                q.append(course)
+        while q:
+            course = q.popleft()
+            for neighbor in graph[course]:
+                inBound[neighbor] -= 1
+                if inBound[neighbor] == 0:
+                    ans.append(neighbor)
+                    q.append(neighbor)
+        for course in inBound:
+            if inBound[course] > 0:
+                return []
+        for i in range(numCourses):
+            if i not in inBound:
+                ans.append(i)
+        return ans[::-1]
+```
+总结：值得做的题的边缘，要满足些很琐碎的细节才能 AC，和 Course Schedule 题不同点在于这题需要用 numCourses。如果有些节点在 prerequisites 里不出现的话，需要在答案里加进去
