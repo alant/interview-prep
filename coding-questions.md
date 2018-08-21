@@ -1,5 +1,8 @@
 # todo
 ## BFS
+### [图上的BFS 判断一个图是否是一棵树](http://www.lintcode.com/problem/graph-valid-tree/)
+### [矩阵上的BFS Lintcode Build Post Office II (Hard)](http://www.lintcode.com/problem/build-post-office-ii/)
+### [Lintcode 892. Alien Dictionary (Hard)](https://www.lintcode.com/problem/alien-dictionary/description)
 ### [Binary Tree Level Order Traversal II](http://www.lintcode.com/en/problem/binary-tree-level-order-traversal-ii/)
 ### [Binary Tree Zigzag Order Traversal](http://www.lintcode.com/en/problem/binary-tree-zigzag-level-order-traversal/)
 ### [Convert Binary Tree to Linked Lists by Depth](http://www.lintcode.com/en/problem/convert-binary-tree-to-linked-lists-by-depth/)
@@ -1752,6 +1755,8 @@ class Solution:
 ```
 总结：注意 isInbound 要查的是 >=0 和 < len()， 其他的问题可以通过跑一个测试数据发现
 
+## Topological sorting 拓扑排序
+
 ### [Lintcode 127. Topological Sorting (Medium)](https://www.lintcode.com/problem/topological-sorting/description)
 ```html
 Given an directed graph, a topological order of the graph nodes is defined as follow:
@@ -1958,3 +1963,110 @@ class Solution(object):
         return ans[::-1]
 ```
 总结：值得做的题的边缘，要满足些很琐碎的细节才能 AC，和 Course Schedule 题不同点在于这题需要用 numCourses。如果有些节点在 prerequisites 里不出现的话，需要在答案里加进去
+
+### [Lintcode 605. Sequence Reconstruction (Medium)](https://www.lintcode.com/problem/sequence-reconstruction/description)
+```html
+Check whether the original sequence org can be uniquely reconstructed from the sequences in seqs. The org sequence is a permutation of the integers from 1 to n, with 1 ≤ n ≤ 10^4. Reconstruction means building a shortest common supersequence of the sequences in seqs (i.e., a shortest sequence so that all sequences in seqs are subsequences of it). Determine whether there is only one sequence that can be reconstructed from seqs and it is the org sequence.
+
+Example
+Given org = [1,2,3], seqs = [[1,2],[1,3]]
+Return false
+Explanation:
+[1,2,3] is not the only one sequence that can be reconstructed, because [1,3,2] is also a valid sequence that can be reconstructed.
+
+Given org = [1,2,3], seqs = [[1,2]]
+Return false
+Explanation:
+The reconstructed sequence can only be [1,2].
+
+Given org = [1,2,3], seqs = [[1,2],[1,3],[2,3]]
+Return true
+Explanation:
+The sequences [1,2], [1,3], and [2,3] can uniquely reconstruct the original sequence [1,2,3].
+
+Given org = [4,1,5,2,6,3], seqs = [[5,2,6,3],[4,1,5,2]]
+Return true
+```
+思路：没什么思路，被考点吸引，如何构建图，如何拓扑排序.
+```python
+class Solution:
+    """
+    @param org: a permutation of the integers from 1 to n
+    @param seqs: a list of sequences
+    @return: true if it can be reconstructed only one or false
+    """
+    def sequenceReconstruction(self, org, seqs):
+        # write your code here
+        if len(seqs) == 0 and len(org) == 0:
+            return True
+        if len(seqs) == 0 and len(org) != 0:
+            return False
+        if len(seqs) != 0 and len(org) == 0:
+            return False
+        graph = {}
+        indegree = {}
+        for seq in seqs:
+            if len(seq) > len(org):
+                return False
+            for val in seq:
+                if val not in graph:
+                    graph[val] = []
+                if val not in
+```
+总结：看了网上答案，记录入度，记录邻居，拓扑排序拓扑排序出来要有唯一解（q 每次长度都是 1）和 org 的相应位置的值要相等结束才能返回 True。写了一半实在是不想写了。 回头在写吧。todo item
+
+#  Binary Tree & Tree-based DFS 二叉树与树上的深度优先搜索
+考察形态:二叉树上求值，求路径 代表例题:http://www.lintcode.com/problem/subtree-with-maximum-average/ 考点本质:深度优先搜索(Depth First Search)
+考察形态:二叉树结构变化 代表例题:http://www.lintcode.com/problem/invert-binary-tree/ 考点本质:深度优先搜索(Depth First Search)
+考察形态:二叉查找树(Binary Search Tree) 代表例题:http://www.lintcode.com/problem/validate-binary-search-tree/ 考点本质:深度优先搜索(Depth First Search)
+
+### [257. Binary Tree Paths (Easy)](https://leetcode.com/problems/binary-tree-paths/description/)
+```html
+Given a binary tree, return all root-to-leaf paths.
+
+Note: A leaf is a node with no children.
+
+Example:
+
+Input:
+
+   1
+ /   \
+2     3
+ \
+  5
+
+Output: ["1->2->5", "1->3"]
+
+Explanation: All root-to-leaf paths are: 1->2->5, 1->3
+```
+思路：既然是 DFS 环节，看着就是 DFS 的解法。实现应该有坑
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def binaryTreePaths(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[str]
+        """
+        ans = []
+        if root == None:
+            return ans
+        self.helper(root, '', ans)
+        return ans
+    def helper(self, root, cur, ans):
+        if root.left == None and root.right == None:
+            ans.append(cur + str(root.val))
+            return
+        if root.left != None:
+            self.helper(root.left, cur + str(root.val) + '->', ans)
+        if root.right != None:
+            self.helper(root.right, cur + str(root.val) + '->', ans)  
+```
+总结：递归的模板需要记，需要当前答案 cur， 总答案 ans，每次进入递归函数时：1.如果已经到底，将 cur append 上 root.val 并加入到 ans；2.如有左边递归左边，如有右边递归右边。注意 python + string 要先把 int 变成 str
