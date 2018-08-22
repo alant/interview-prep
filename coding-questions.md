@@ -2130,3 +2130,32 @@ class Solution(object):
             return r
 ```
 总结：答案的算法是 DFS，从叶子节点向上，如果子树中有目标节点，返回目标节点。否则为 None。如果左右子树都有目标节点，则找到 LCA，如果在 p 为跟节点的子树中有 q，则 p 为 LCA 反之亦然。最后为子树返回目标节点非常 tricky，必须要用 l != None。 直觉上更好理解的 l == p or l == q 过不了， 不知道为什么。 已经在[讨论区问了](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/discuss/162142/Can't-tell-the-difference-between-two-versions-of-my-code-one-ac-one-fail)
+
+### [235. Lowest Common Ancestor of a Binary Search Tree (Easy)](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/)
+思路：跟上题一样，除了多一个 BST 树的条件， 将题变成了一个二分查找的题
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        if root == None or root == p or root == q:
+            return root
+        if root.val > p.val and root.val > q.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+        elif root.val < p.val and root.val < q.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        else:
+            return root
+```
+总结：稍微看一下就行。 不值得刷的题。
