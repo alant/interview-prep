@@ -2070,3 +2070,63 @@ class Solution(object):
             self.helper(root.right, cur + str(root.val) + '->', ans)  
 ```
 总结：递归的模板需要记，需要当前答案 cur， 总答案 ans，每次进入递归函数时：1.如果已经到底，将 cur append 上 root.val 并加入到 ans；2.如有左边递归左边，如有右边递归右边。注意 python + string 要先把 int 变成 str
+
+### [236. Lowest Common Ancestor of a Binary Tree (Medium)](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)
+```html
+Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+
+Given the following binary tree:  root = [3,5,1,6,2,0,8,null,null,7,4]
+
+        _______3______
+       /              \
+    ___5__          ___1__
+   /      \        /      \
+   6      _2       0       8
+         /  \
+         7   4
+Example 1:
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+Output: 3
+Explanation: The LCA of of nodes 5 and 1 is 3.
+
+Example 2:
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+Output: 5
+Explanation: The LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself
+             according to the LCA definition.
+
+Note:
+All of the nodes' values will be unique.
+p and q are different and both values will exist in the binary tree.
+```
+思路：很久没刷过题了，这题第一感觉是 DFS 回溯，但是没有多的灵感。看答案。
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        if root == None or root == p or root == q:
+            return root
+        l = self.lowestCommonAncestor(root.left, p, q)
+        r = self.lowestCommonAncestor(root.right, p, q)
+        if (l == p and r == q) or (l == q and r == p):
+            return root
+        if l != None:
+            return l
+        if r != None:
+            return r
+```
+总结：答案的算法是 DFS，从叶子节点向上，如果子树中有目标节点，返回目标节点。否则为 None。如果左右子树都有目标节点，则找到 LCA，如果在 p 为跟节点的子树中有 q，则 p 为 LCA 反之亦然。最后为子树返回目标节点非常 tricky，必须要用 l != None。 直觉上用 l == p or l == q 过不了， 不知道为什么。 已经在[讨论区问了](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/discuss/162142/Can't-tell-the-difference-between-two-versions-of-my-code-one-ac-one-fail)
