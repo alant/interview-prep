@@ -2159,3 +2159,58 @@ class Solution(object):
             return root
 ```
 总结：稍微看一下就行。 不值得刷的题。
+
+### [114. Flatten Binary Tree to Linked List (Medium)](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/)
+```html
+Given a binary tree, flatten it to a linked list in-place.
+
+For example, given the following tree:
+
+    1
+   / \
+  2   5
+ / \   \
+3   4   6
+The flattened tree should look like:
+
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+```
+思路：看着像典型的 DFS，不知道有什么坑，直接写吧
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def flatten(self, root):
+        """
+        :type root: TreeNode
+        :rtype: void Do not return anything, modify root in-place instead.
+        """
+        if root == None:
+            return
+        self.flatten(root.left)
+        self.flatten(root.right)
+        if root.left == None:
+            return
+        p = root.left
+        while p.right:
+            p = p.right
+        p.right = root.right
+        root.right = root.left
+        root.left = None                 
+```
+总结：基本靠套路。1.None 既 return，左右到底， 左边为空既 return 2. 到左边一个，往右到底， 套路：p.right = root.right; root.right = root.left; root.left = null i.e.：将 root 右边接到 p（尾巴上）, root 右节点变为 root 左节点， root 左节点置空
