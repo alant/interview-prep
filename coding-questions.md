@@ -2129,4 +2129,4 @@ class Solution(object):
         if r != None:
             return r
 ```
-总结：答案的算法是 DFS，从叶子节点向上，如果子树中有目标节点，返回目标节点。否则为 None。如果左右子树都有目标节点，则找到 LCA，如果在 p 为跟节点的子树中有 q，则 p 为 LCA 反之亦然。最后为子树返回目标节点非常 tricky，必须要用 l != None。 直觉上用 l == p or l == q 过不了， 不知道为什么。 已经在[讨论区问了](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/discuss/162142/Can't-tell-the-difference-between-two-versions-of-my-code-one-ac-one-fail)
+总结：答案的算法是 DFS，从叶子节点向上，如果子树中有目标节点，返回目标节点。否则为 None。如果左右子树都有目标节点，则找到 LCA，如果在 p 为跟节点的子树中有 q，则 p 为 LCA 反之亦然。最后为子树返回目标节点非常 tricky，必须要用 l != None。 直觉上更好理解的 l == p or l == q 过不了， 不知道为什么。 已经在[讨论区问了](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/discuss/162142/Can't-tell-the-difference-between-two-versions-of-my-code-one-ac-one-fail)
