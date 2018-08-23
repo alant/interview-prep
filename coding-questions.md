@@ -2346,5 +2346,29 @@ class Solution(object):
             return
         self.helper(root.right, k)
 
+# 非递归 / 栈
+class Solution(object):
+    def kthSmallest(self, root, k):
+        """
+        :type root: TreeNode
+        :type k: int
+        :rtype: int
+        """
+        stack = []
+        while root:
+            stack.append(root)
+            root = root.left
+        cnt = 0
+        while stack:
+            node = stack.pop()
+            cnt += 1
+            if cnt == k:
+                return node.val
+            if node.right:
+                node = node.right
+                while node:
+                    stack.append(node)
+                    node = node.left
+
 ```
-总结：答案基本就是中序遍历，统计当前遍历的步数，到 k 返回
+总结：答案基本就是中序遍历，统计当前遍历的步数，到 k 返回。递归算法还是需要全局变量:(。非递归 / 栈算法用上题的套路加一个 counter 就很容易写对
