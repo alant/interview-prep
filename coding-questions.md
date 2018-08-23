@@ -2371,4 +2371,60 @@ class Solution(object):
                     node = node.left
 
 ```
-总结：答案基本就是中序遍历，统计当前遍历的步数，到 k 返回。递归算法还是需要全局变量:(。非递归 / 栈算法用上题的套路加一个 counter 就很容易写对
+总结：答案基本就是中序遍历，统计当前遍历的步数，到 k 返回。递归算法还是需要全局变量:(。非递归 / 栈算法用上题的套路加一个 counter 就很容易写对。 Follow up: 二叉树经常被修改 如何优化 kthSmallest 这个操作? 在 TreeNode 中增加一个 counter，代表整个树的节点个数，也可以用一个 HashMap<TreeNode, Integer> 来存储某个节点为代表的子树的节点个数。在增删查改的过程中记录不断更新受影响节点的 counter， 在 kthSmallest 的实现中用类似 Quick Select 的算法去找到 kth smallest element 时间复杂度为 O(h)，h 为树的高度。
+
+### [173. Binary Search Tree Iterator (Medium)](https://leetcode.com/problems/binary-search-tree-iterator/description/)
+```html
+Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
+
+Calling next() will return the next smallest number in the BST.
+
+Note: next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
+```
+思路：看了代码 “Your BSTIterator will be called like this” 后感觉这个 iterator 需要存一个中序遍历的队列, next() 就 popleft，hasNext() 就返回该队列是否为空。use O(h) 内存暂时不知道怎么实现
+```python
+# Definition for a  binary tree node
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class BSTIterator(object):
+    q = collections.deque()
+    def __init__(self, root):
+        """
+        :type root: TreeNode
+        """
+        if root == None:
+            return
+        stack = []
+        while root:
+            stack.append(root)
+            root = root.left
+        while stack:
+            node = stack.pop()
+            self.q.append(node.val)
+            if node.right:
+                node = node.right
+                while node:
+                    stack.append(node)
+                    node = node.left
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return len(self.q) > 0
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        return self.q.popleft()
+
+# Your BSTIterator will be called like this:
+# i, v = BSTIterator(root), []
+# while i.hasNext(): v.append(i.next())
+```
+总结：注意全局变量（和 class method）前面加 self.，别的没什么，想好了比较好写的题
