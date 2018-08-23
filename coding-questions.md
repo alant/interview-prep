@@ -2214,3 +2214,137 @@ class Solution(object):
         root.left = None                 
 ```
 总结：基本靠套路。1.None 既 return，左右到底， 左边为空既 return 2. 到左边一个，往右到底， 套路：p.right = root.right; root.right = root.left; root.left = null i.e.：将 root 右边接到 p（尾巴上）, root 右节点变为 root 左节点， root 左节点置空
+
+### [94. Binary Tree Inorder Traversal (Medium)](https://leetcode.com/problems/binary-tree-inorder-traversal/description/)
+```html
+Given a binary tree, return the inorder traversal of its nodes' values.
+
+Example:
+
+Input: [1,null,2,3]
+   1
+    \
+     2
+    /
+   3
+
+Output: [1,3,2]
+Follow up: Recursive solution is trivial, could you do it iteratively?
+```
+思路：递归和用栈各写一遍
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+# 递归
+class Solution(object):
+    ans = []
+    def inorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """   
+        self.ans = []
+        if root == None:
+            return self.ans
+        self.helper(root)
+        return self.ans
+    def helper(self, root):
+        if root == None:
+            return
+        self.helper(root.left)
+        self.ans.append(root.val)
+        self.helper(root.right)
+
+# 非递归 / stack
+class Solution(object):
+    def inorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """   
+        stack = []
+        ans = []
+        if root == None:
+            return ans
+        while root:
+            stack.append(root)
+            root = root.left
+        while stack:
+            node = stack.pop()
+            ans.append(node.val)
+            if node.right:
+                node = node.right
+                while node:
+                    stack.append(node)
+                    node = node.left
+        return ans
+```
+总结：递归好理解的方法需要用一个全局变量， 目前还没有想到不用全局变量的方法。非递归 / stack 需要记住套路：1.从 root 往左全入栈；2. pop 栈，ans.append(node.val)；3.有右子节点的话走到右子节点，将右子节点及所有左子节点全入栈
+
+### [230. Kth Smallest Element in a BST (Medium)](https://leetcode.com/problems/kth-smallest-element-in-a-bst/description/)
+```html
+Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+
+Note:
+You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
+
+Example 1:
+Input: root = [3,1,4,null,2], k = 1
+   3
+  / \
+ 1   4
+  \
+   2
+Output: 1
+
+Example 2:
+Input: root = [5,3,6,2,4,null,null,1], k = 3
+       5
+      / \
+     3   6
+    / \
+   2   4
+  /
+ 1
+Output: 3
+Follow up:
+What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently? How would you optimize the kthSmallest routine?
+```
+思路：第一感觉是一直往下，找到最小，然后利用 BST 左边比 root 小，root 不大于右边的特性找到 K。 具体怎么实现得看答案。
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+# 第一次写能 ac 的土递归办法
+class Solution(object):
+    cnt = 0
+    ans = 0
+    def kthSmallest(self, root, k):
+        """
+        :type root: TreeNode
+        :type k: int
+        :rtype: int
+        """
+        self.helper(root, k)
+        return self.ans
+    def helper(self, root, k):
+        if root == None:
+            return
+        self.helper(root.left, k)
+        self.cnt += 1
+        if self.cnt == k:
+            self.ans = root.val
+            return
+        self.helper(root.right, k)
+
+```
+总结：答案基本就是中序遍历，统计当前遍历的步数，到 k 返回
