@@ -1,4 +1,7 @@
 # todo
+## DFS
+BST 中序遍历相关题: http://www.lintcode.com/problem/inorder-successor-in-binary-search-tree/ http://www.lintcode.com/problem/validate-binary-search-tree/ 不用递归 http://www.lintcode.com/problem/binary-tree-inorder-traversal/ 不用递归
+
 ## BFS
 ### [图上的BFS 判断一个图是否是一棵树](http://www.lintcode.com/problem/graph-valid-tree/)
 ### [矩阵上的BFS Lintcode Build Post Office II (Hard)](http://www.lintcode.com/problem/build-post-office-ii/)
@@ -2428,3 +2431,59 @@ class BSTIterator(object):
 # while i.hasNext(): v.append(i.next())
 ```
 总结：注意全局变量（和 class method）前面加 self.，别的没什么，想好了比较好写的题
+
+### [Lintcode 900. Closest Binary Search Tree Value (Easy)](https://www.lintcode.com/problem/closest-binary-search-tree-value/description)
+```html
+Given a non-empty binary search tree and a target value, find the value in the BST that is closest to the target.
+
+Given target value is a floating point.
+You are guaranteed to have only one unique value in the BST that is closest to the target.
+Example
+Given root = {1}, target = 4.428571, return 1.
+```
+思路：如果中序遍历的话是从小到大，这题要找离 target 最近的点，中序遍历以后可以用二分查找直接找到那个点
+```python
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @return: the value in the BST that is closest to the target
+    """
+    # 最直观
+    def closestValue(self, root, target):
+        # write your code here
+        ans = root.val
+        while root:
+            if abs(root.val - target) < abs(ans - target):
+                ans = root.val
+            if root.val < target:
+                root = root.right
+            else:
+                root = root.left
+        return ans
+
+    # 递归回溯
+    def closestValue(self, root, target):
+        # write your code here
+        tempA = root.val
+        if tempA < target:
+            root = root.right
+        else:
+            root = root.left
+        if root == None:
+            return tempA
+        tempB = self.closestValue(root, target)
+        if abs(tempA - target) < abs(tempB - target):
+            return tempA
+        else:
+            return tempB
+```
+总结：看了答案以后，最直观的还是根据 BST 性质二分查找；除此之外还有递归（回溯），迭代 / stack / todo 中序遍历（还要维护一个最小值），多种写法。直观写法需要注意：1.ans 赋值的条件；2.root 往哪边走的条件。 递归（回溯）写法要注意：1.返回的条件放的位置（在决定往哪边走之后）；递归完之后还要判断最后返回哪个值
